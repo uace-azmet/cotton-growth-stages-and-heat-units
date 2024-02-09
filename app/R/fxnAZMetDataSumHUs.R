@@ -13,7 +13,7 @@ fxnAZMetDataSumHUs <- function(azmetStation, startDate, endDate) {
   )
   
   # For case of missing data from Yuma North Gila
-  if (azmetStation == "Yuma North Gila" && endDate >= lubridate::as_date(paste0(lubridate::year(end), "-06-16"))) {
+  if (azmetStation == "Yuma North Gila" && endDate >= lubridate::as_date(paste0(lubridate::year(endDate), "-06-16"))) {
     dataAZMetDataMerge <- dataAZMetDataMerge %>%
       dplyr::filter(date_year != 2021)
   }

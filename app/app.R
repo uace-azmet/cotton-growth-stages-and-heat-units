@@ -146,11 +146,7 @@ server <- function(input, output, session) {
   # AZMet heat-unit accumulation data
   dataAZMetDataSumHUs <- eventReactive(input$calculateHeatAccumulation, {
     validate(
-      need(
-        input$plantingDate <= input$endDate, 
-        "Please select a 'Planting Date' that is earlier than or the same as the 'End Date'."
-      ),
-      errorClass = "datepickerBlank"
+      need(expr = input$plantingDate <= input$endDate, message = FALSE)
     )
     
     idCalculatingHeatAccumulation <- showNotification(
@@ -169,14 +165,6 @@ server <- function(input, output, session) {
       azmetStation = input$azmetStation, 
       startDate = input$plantingDate, 
       endDate = input$endDate)
-  })
-  
-  # Format AZMet data for HTML table preview
-  dataAZMetDataPreview <- eventReactive(dataAZMetDataSumHUs(), {
-    fxnAZMetDataPreview(
-      inData = dataAZMetDataSumHUs(), 
-      timeStep = "Daily"
-    )
   })
   
   # Build figure
@@ -220,8 +208,8 @@ server <- function(input, output, session) {
   figureTitle <- eventReactive(input$calculateHeatAccumulation, {
     validate(
       need(
-        input$plantingDate <= input$endDate, 
-        "Please select a 'Planting Date' that is earlier than or the same as the 'End Date'."
+        expr = input$plantingDate <= input$endDate, 
+        message = "Please select a 'Planting Date' that is earlier than or the same as the 'End Date'."
       ),
       errorClass = "datepicker"
     )
@@ -232,7 +220,7 @@ server <- function(input, output, session) {
   # Outputs -----
   
   output$dataTablePreview <- renderTable(
-    expr = dataAZMetDataPreview(), 
+    expr = dataAZMetDataSumHUs(), 
     striped = TRUE, 
     hover = TRUE, 
     bordered = FALSE, 
