@@ -15,6 +15,7 @@
 # Libraries
 library(azmetr)
 library(dplyr)
+library(ggplot2)
 library(htmltools)
 library(lubridate)
 library(shiny)
@@ -100,28 +101,10 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureSubtitle"))
       ),
       
-      #br(),
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableHelpText"))
-      #),
-      
       br(),
       fluidRow(
-        column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
+        column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figure"))
       ), 
-      
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figureGrowthStage"))
-      #), 
-      
-      #br(), br(),
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureCaption"))
-      #),
-      
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, uiOutput(outputId = "downloadButtonTSV"))
-      #),
       
       br(), br(),
       fluidRow(
@@ -168,21 +151,15 @@ server <- function(input, output, session) {
   })
   
   # Build figure
-  #figure <- eventReactive(dAZMetData(), {
-  #  if (input$plantingDate >= input$endDate) {
-  #    validate("Please select a 'Planting Date' that is earlier than the 'End Date'.",
-  #             errorClass = "datepickerBlank")
-  #  }
-    
-  #  figData = dfAZMetDaily()
-    
-  #  fxnFigGrowthStage(inData = figData, inStation = input$station, inPlantingDate = input$plantingDate, inEndDate = input$endDate)
-  #})
-  
-  # Build figure caption
-  #figureCaption <- eventReactive(dfAZMetData(), {
-  #  fxnFigureCaption()
-  #})
+  figure <- eventReactive(dataAZMetDataSumHUs(), {
+    #dataFigure = dataAZMetDataSumHUs()
+    fxnFigure(
+      inData = dataAZMetDataSumHUs(), 
+      azmetStation = input$azmetStation,
+      startDate = input$plantingDate, 
+      endDate = input$endDate
+    )
+  })
   
   # Build figure footer
   figureFooter <- eventReactive(dataAZMetDataSumHUs(), {
@@ -232,6 +209,10 @@ server <- function(input, output, session) {
     digits = NULL, 
     na = "na"
   )
+  
+  output$figure <- renderPlot({
+    figure()
+  }, res = 96)
   
   output$figureSubtitle <- renderUI({
     figureSubtitle()

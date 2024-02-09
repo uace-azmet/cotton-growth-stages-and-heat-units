@@ -41,7 +41,7 @@ fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
   
   webpageCode <- a(
     "GitHub page", 
-    href="https://github.com/uace-azmet/azmet-cotton-growth-stages-and-heat-units", 
+    href="https://github.com/uace-azmet/cotton-growth-stages-and-heat-units", 
     target="_blank"
   )
   
