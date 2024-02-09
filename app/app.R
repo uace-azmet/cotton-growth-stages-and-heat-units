@@ -57,7 +57,7 @@ ui <- htmltools::htmlTemplate(
           inputId = "plantingDate",
           label = "Planting Date",
           value = initialPlantingDate,
-          min = initialPlantingDate,
+          min = initialPlantingDate - 31, # January 1 of current growing season
           max = Sys.Date() - 1,
           format = "MM d, yyyy",
           startview = "month",
@@ -70,7 +70,7 @@ ui <- htmltools::htmlTemplate(
           inputId = "endDate",
           label = "End Date",
           value = initialEndDate,
-          min = initialPlantingDate + 1,
+          min = initialPlantingDate - 31, # January 1 of current growing season,
           max = initialEndDate,
           format = "MM d, yyyy",
           startview = "month",
@@ -105,6 +105,11 @@ ui <- htmltools::htmlTemplate(
       #  column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "tableHelpText"))
       #),
       
+      br(),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, tableOutput(outputId = "dataTablePreview"))
+      ), 
+      
       #fluidRow(
       #  column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figureGrowthStage"))
       #), 
@@ -138,8 +143,8 @@ server <- function(input, output, session) {
   
   # Reactive events -----
   
-  # AZMet data ELT
-  dAZMetData <- eventReactive(input$calculateHeatAccumulation, {
+  # AZMet heat-unit accumulation data
+  dataAZMetDataSumHUs <- eventReactive(input$calculateHeatAccumulation, {
     validate(
       need(
         input$plantingDate <= input$endDate, 
@@ -159,13 +164,32 @@ server <- function(input, output, session) {
     
     on.exit(removeNotification(id = idCalculatingHeatAccumulation), add = TRUE)
     
-    fxnAZMetDataELT(
+    # Calls 'fxnAZMetDataMerge()', which calls 'fxnAZMetDataELT()'
+    fxnAZMetDataSumHUs(
       azmetStation = input$azmetStation, 
-      timeStep = "Daily", 
       startDate = input$plantingDate, 
-      endDate = input$endDate
+      endDate = input$endDate)
+  })
+  
+  # Format AZMet data for HTML table preview
+  dataAZMetDataPreview <- eventReactive(dataAZMetDataSumHUs(), {
+    fxnAZMetDataPreview(
+      inData = dataAZMetDataSumHUs(), 
+      timeStep = "Daily"
     )
   })
+  
+  # Build figure
+  #figure <- eventReactive(dAZMetData(), {
+  #  if (input$plantingDate >= input$endDate) {
+  #    validate("Please select a 'Planting Date' that is earlier than the 'End Date'.",
+  #             errorClass = "datepickerBlank")
+  #  }
+    
+  #  figData = dfAZMetDaily()
+    
+  #  fxnFigGrowthStage(inData = figData, inStation = input$station, inPlantingDate = input$plantingDate, inEndDate = input$endDate)
+  #})
   
   # Build figure caption
   #figureCaption <- eventReactive(dfAZMetData(), {
@@ -173,23 +197,23 @@ server <- function(input, output, session) {
   #})
   
   # Build figure footer
-  figureFooter <- eventReactive(dAZMetData(), {
+  figureFooter <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureFooter(
       azmetStation = input$azmetStation,
-      plantingDate = input$plantingDate, 
+      startDate = input$plantingDate, 
       endDate = input$endDate, 
       timeStep = "Daily"
     )
   })
   
   # Build table footer help text
-  figureFooterHelpText <- eventReactive(dAZMetData(), {
+  figureFooterHelpText <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureFooterHelpText()
   })
   
   # Build figure subtitle
-  figureSubtitle <- eventReactive(dAZMetData(), {
-    fxnFigureSubtitle(plantingDate = input$plantingDate, endDate = input$endDate)
+  figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
+    fxnFigureSubtitle(startDate = input$plantingDate, endDate = input$endDate)
   })
   
   # Build figure title
@@ -207,9 +231,19 @@ server <- function(input, output, session) {
   
   # Outputs -----
   
-  #output$figureCaption <- renderUI({
-  #  figureCaption()
-  #})
+  output$dataTablePreview <- renderTable(
+    expr = dataAZMetDataPreview(), 
+    striped = TRUE, 
+    hover = TRUE, 
+    bordered = FALSE, 
+    spacing = "xs", 
+    width = "auto", 
+    align = "c", 
+    rownames = FALSE, 
+    colnames = TRUE, 
+    digits = NULL, 
+    na = "na"
+  )
   
   output$figureSubtitle <- renderUI({
     figureSubtitle()

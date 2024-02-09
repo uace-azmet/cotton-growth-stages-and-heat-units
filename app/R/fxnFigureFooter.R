@@ -1,13 +1,13 @@
 #' `fxnFigureFooter.R` - Build footer for figure based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
-#' @param plantingDate - Planting date of period of interest
+#' @param startDate - Planting date of period of interest
 #' @param endDate - End date of period of interest
 #' @param timeStep - AZMet data time step
 #' @return `figureFooter` - Footer for figure based on user input
 
 
-fxnFigureFooter <- function(azmetStation, plantingDate, endDate, timeStep) {
+fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
   
   # Inputs to build figure footer
   
@@ -69,7 +69,7 @@ fxnFigureFooter <- function(azmetStation, plantingDate, endDate, timeStep) {
       htmltools::p(
         htmltools::HTML(
           paste0(
-            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (blue bar in graph) since", " ", gsub(" 0", " ", format(plantingDate, "%B %d, %Y")), " ", "and through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ", "Cumulative heat unit data for the Yuma North Gila station are unavailable in 2021 after June 15.",  
+            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (blue bar in graph) since", " ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " ", "and through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ", "Cumulative heat unit data for the Yuma North Gila station are unavailable in 2021 after June 15.",  
             br(), br(), 
             timeStep, " ", "AZMet data are from", " ", apiURL, " and accessed using the ", azmetrURL, " R package. Table values from recent dates may be based on provisional data", ".", " ", "More information about", " ", webpageDataVariables, ",", " ", webpageNetworkMap, ",", " ", "and", " ", webpageStationMetadata, " ", "is available on the", " ", webpageAZMet, ".", " ", "Users of AZMet data and data applications assume all risks of its use", ".",
             br(), br(),
@@ -84,7 +84,7 @@ fxnFigureFooter <- function(azmetStation, plantingDate, endDate, timeStep) {
       htmltools::p(
         htmltools::HTML(
           paste0(
-            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (blue bar in graph) since", " ", gsub(" 0", " ", format(plantingDate, "%B %d, %Y")), " ", "and through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ",  
+            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (blue bar in graph) since", " ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " ", "and through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ",  
             br(), br(), 
             timeStep, " ", "AZMet data are from", " ", apiURL, " and accessed using the ", azmetrURL, " R package. Table values from recent dates may be based on provisional data", ".", " ", "More information about", " ", webpageDataVariables, ",", " ", webpageNetworkMap, ",", " ", "and", " ", webpageStationMetadata, " ", "is available on the", " ", webpageAZMet, ".", " ", "Users of AZMet data and data applications assume all risks of its use", ".",
             br(), br(),
