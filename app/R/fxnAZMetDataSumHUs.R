@@ -7,7 +7,6 @@
 
 
 fxnAZMetDataSumHUs <- function(azmetStation, startDate, endDate) {
-  
   dataAZMetDataMerge <- fxnAZMetDataMerge(
     azmetStation = azmetStation, startDate = startDate, endDate = endDate
   )

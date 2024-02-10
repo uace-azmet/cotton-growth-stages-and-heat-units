@@ -7,9 +7,7 @@
 
 
 fxnAZMetDataMerge <- function(azmetStation, startDate, endDate) {
-  
-  # Placeholder for station start date
-  azmetStationStartDate <- lubridate::as_date("2021-01-01")
+  azmetStationStartDate <- lubridate::as_date("2021-01-01") # Placeholder for station start date
   
   while (startDate >= azmetStationStartDate) {
     

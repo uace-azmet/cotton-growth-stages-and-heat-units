@@ -6,8 +6,9 @@
 #' @param endDate - End date of period of interest
 #' @return `figure` - png of figure
 #' 
+
+
 fxnFigure <- function(inData, azmetStation, startDate, endDate) {
-  
   figure <- ggplot2::ggplot(
     data = inData, 
     mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative)
@@ -65,7 +66,10 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
       text = element_text(family = "sans"),
       #title,
       #aspect.ratio,
-      axis.title = element_text(color = "#343a40", face = "plain", size = 10, hjust = 0.0, margin = margin(t = 0.2, r = 0, b = 0, l = 0, unit = "cm")),
+      axis.title = element_text(
+        color = "#343a40", face = "plain", size = 10, hjust = 0.0, 
+        margin = margin(t = 0.2, r = 0, b = 0, l = 0, unit = "cm")
+      ),
       #axis.title.x,
       #axis.title.x.top,
       #axis.title.x.bottom,
