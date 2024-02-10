@@ -8,9 +8,7 @@
 
 
 fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
-  
-  # Inputs to build figure footer
-  
+  # Inputs
   apiURL <- a(
     "api.azmet.arizona.edu", 
     href="https://api.azmet.arizona.edu/v1/observations/daily", # Daily data
@@ -26,12 +24,6 @@ fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
   bulletinURL <- a(
     "AZ1602 'Heat Units'",
     href="https://extension.arizona.edu/sites/extension.arizona.edu/files/pubs/az1602.pdf",
-    target="_blank"
-  )
-  
-  webpageAZMet <- a(
-    "AZMet website", 
-    href="https://staging.azmet.arizona.edu/", 
     target="_blank"
   )
   
@@ -63,7 +55,13 @@ fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
     target="_blank"
   )
   
-  # Build figure footer
+  webpageAZMet <- a(
+    "AZMet website", 
+    href="https://staging.azmet.arizona.edu/", 
+    target="_blank"
+  )
+  
+  # Footer text
   if (endDate > as.Date(paste0(lubridate::year(Sys.Date()), "-06-15")) & azmetStation == "Yuma North Gila") {
     figureFooter <- 
       htmltools::p(

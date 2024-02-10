@@ -176,7 +176,7 @@ server <- function(input, output, session) {
   
   # Build figure subtitle
   figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
-    fxnFigureSubtitle(azmetStation = input$azmetStation)
+    fxnFigureSubtitle(azmetStation = input$azmetStation, startDate = input$plantingDate, endDate = input$endDate)
   })
   
   # Build figure title
@@ -189,7 +189,7 @@ server <- function(input, output, session) {
       errorClass = "datepicker"
     )
     
-    figureTitle <- fxnFigureTitle()
+    figureTitle <- fxnFigureTitle(inData = dataAZMetDataSumHUs(), endDate = input$endDate)
   })
   
   # Outputs -----
