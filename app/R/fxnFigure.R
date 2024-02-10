@@ -40,13 +40,13 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#999999", fill = NA, label.size = NA, size = 4, vjust = 0.0
+      color = "#999999", fill = NA, label.size = NA, size = 3, vjust = 0.0
     ) +
     
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#001C48", fill = NA, label.size = NA, size = 4, vjust = 0.0
+      color = "#001C48", fill = NA, label.size = NA, size = 3, vjust = 0.0
     ) + 
     
     labs(x = "\nYear", y = "Cumulative Heat Units\n") +
