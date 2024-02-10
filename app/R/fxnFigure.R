@@ -13,15 +13,15 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
     mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative)
   ) +
     
-    # Cotton growth stages as cumulative heat units
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 1800, ymax = 2200, alpha = 0.1, fill = "#C8C8C8") + # Peak Bloom
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 2400, ymax = 2800, alpha = 0.1, fill = "#C8C8C8") + # Cutout
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 3000, ymax = 3400, alpha = 0.1, fill = "#C8C8C8") + # Terminate
+    # Cotton growth stages as cumulative heat units (https://www.color-hex.com/color/CCCCCC)
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 1800, ymax = 2200, alpha = 0.1, fill = "#CCCCCC") + # Peak Bloom
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 2400, ymax = 2800, alpha = 0.1, fill = "#CCCCCC") + # Cutout
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 3000, ymax = 3400, alpha = 0.1, fill = "#CCCCCC") + # Terminate
     
     geom_col( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
-      alpha = 1.0, fill = "#C0C0C0"
+      alpha = 1.0, fill = "#999999"
     ) +
     
     geom_col( # Current growing season
@@ -33,22 +33,22 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
     geom_hline( # Cotton growth stages as cumulative heat units
       data = dataCottonGrowthStages, 
       mapping = aes(yintercept = huapValue), 
-      alpha = 1.0, color = "#D3D3D3", linetype = "solid", linewidth = 0.25
+      alpha = 1.0, color = "#CCCCCC", linetype = "solid", linewidth = 0.3
     ) +
     
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
-      mapping = aes(label = .data$heat_units_55F_cumulative, fontface = "bold"), 
-      color = "#C0C0C0", fill = NA, label.size = NA, size = 4, vjust = 0.0
+      mapping = aes(label = .data$labelHUs, fontface = "bold"), 
+      color = "#999999", fill = NA, label.size = NA, size = 4, vjust = 0.0
     ) +
     
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
-      mapping = aes(label = .data$heat_units_55F_cumulative, fontface = "bold"), 
+      mapping = aes(label = .data$labelHUs, fontface = "bold"), 
       color = "#001C48", fill = NA, label.size = NA, size = 4, vjust = 0.0
     ) + 
     
-    labs(x = "Year") +
+    labs(x = "\nYear", y = "Cumulative Heat Units\n") +
     
     scale_y_continuous(
       breaks = dataCottonGrowthStages$huapValue, 
@@ -65,13 +65,13 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
       text = element_text(family = "sans"),
       #title,
       #aspect.ratio,
-      #axis.title,
-      axis.title.x = element_text(color = "#343a40", face = "plain", size = 10),
+      axis.title = element_text(color = "#343a40", face = "plain", size = 10, hjust = 0.0, margin = margin(t = 0.2, r = 0, b = 0, l = 0, unit = "cm")),
+      #axis.title.x,
       #axis.title.x.top,
       #axis.title.x.bottom,
-      axis.title.y = element_blank(),
+      #axis.title.y,
       #axis.title.y.left,
-      #axis.title.y.right,
+      axis.title.y.right = element_blank(),
       #axis.text,
       axis.text.x = element_text(color = "#343a40", face = "plain", size = 10),
       #axis.text.x.top,

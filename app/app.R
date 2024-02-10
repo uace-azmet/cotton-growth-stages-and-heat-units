@@ -101,7 +101,6 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureSubtitle"))
       ),
       
-      br(),
       fluidRow(
         column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figure"))
       ), 
@@ -152,7 +151,6 @@ server <- function(input, output, session) {
   
   # Build figure
   figure <- eventReactive(dataAZMetDataSumHUs(), {
-    #dataFigure = dataAZMetDataSumHUs()
     fxnFigure(
       inData = dataAZMetDataSumHUs(), 
       azmetStation = input$azmetStation,
@@ -178,7 +176,7 @@ server <- function(input, output, session) {
   
   # Build figure subtitle
   figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
-    fxnFigureSubtitle(startDate = input$plantingDate, endDate = input$endDate)
+    fxnFigureSubtitle(azmetStation = input$azmetStation)
   })
   
   # Build figure title
@@ -191,36 +189,14 @@ server <- function(input, output, session) {
       errorClass = "datepicker"
     )
     
-    figureTitle <- fxnFigureTitle(azmetStation = input$azmetStation)
+    figureTitle <- fxnFigureTitle()
   })
   
   # Outputs -----
   
-  output$dataTablePreview <- renderTable(
-    expr = dataAZMetDataSumHUs(), 
-    striped = TRUE, 
-    hover = TRUE, 
-    bordered = FALSE, 
-    spacing = "xs", 
-    width = "auto", 
-    align = "c", 
-    rownames = FALSE, 
-    colnames = TRUE, 
-    digits = NULL, 
-    na = "na"
-  )
-  
   output$figure <- renderPlot({
     figure()
   }, res = 96)
-  
-  output$figureSubtitle <- renderUI({
-    figureSubtitle()
-  })
-  
-  output$figureTitle <- renderUI({
-    figureTitle()
-  })
   
   output$figureFooter <- renderUI({
     figureFooter()
@@ -228,6 +204,14 @@ server <- function(input, output, session) {
   
   output$figureFooterHelpText <- renderUI({
     figureFooterHelpText()
+  })
+  
+  output$figureSubtitle <- renderUI({
+    figureSubtitle()
+  })
+  
+  output$figureTitle <- renderUI({
+    figureTitle()
   })
 }
 

@@ -1,21 +1,24 @@
 #' `fxnFigureSubtitle.R` - Build subtitle for figure based on user input
 #' 
-#' @param startDate - Start date of period of interest
-#' @param endDate - End date of period of interest
-#' @return `figureSubtitle` - Subtitle for figure based on selected dates
+#' @param azmetStation - AZMet station selection by user
+#' @return `figureSubtitle` - Subtitle for figure based on selected AZMet station
 
 
-fxnFigureSubtitle <- function(startDate, endDate) {
+fxnFigureSubtitle <- function(azmetStation) {
   figureSubtitle <- 
     htmltools::p(
       htmltools::HTML(
         paste(
-          "Values are accumulations of daily heat units from ", 
-          gsub(" 0", " ", format(startDate, "%B %d, %Y")), 
-          "through", 
-          gsub(" 0", " ", format(endDate, "%B %d, %Y")), 
+          "AZMet", azmetStation, "Station", 
           sep = " "
-        )
+        ),
+        #paste(
+        #  "Values above bars are accumulations of daily heat units from ", 
+        #  gsub(" 0", " ", format(startDate, "%B %d, %Y")), 
+        #  "through", 
+        #  gsub(" 0", " ", format(endDate, "%B %d, %Y")), 
+        #  sep = " "
+        #)
       ), 
       
       class = "figure-subtitle"
