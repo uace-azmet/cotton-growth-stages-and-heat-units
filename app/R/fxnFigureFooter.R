@@ -86,7 +86,7 @@ fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
             br(), br(), 
             timeStep, " ", "AZMet data are from", " ", apiURL, " and accessed using the ", azmetrURL, " R package. Values from recent dates may be based on provisional data", ".", " ", "More information about", " ", webpageDataVariables, ",", " ", webpageNetworkMap, ",", " ", "and", " ", webpageStationMetadata, " ", "is available on the", " ", webpageAZMet, ".", " ", "Users of AZMet data and data applications assume all risks of its use", ".",
             br(), br(),
-            "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed", " ", todayDate, "'.",
+            "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed ", todayDate, "', along with 'Arizona Meteorological Network (", todayYear, ") Cotton Growth Stages and Heat Units. https://viz.datascience.arizona.edu/azmet/cotton-growth-stages-and-heat-units. Accessed ", todayDate, "'.",
             br(), br(),
             "For information on how this webpage is put together, please visit the", " ", webpageCode, " ", "for this tool."
           )
