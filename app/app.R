@@ -179,7 +179,7 @@ server <- function(input, output, session) {
       errorClass = "datepicker"
     )
     
-    figureTitle <- fxnFigureTitle(inData = dataAZMetDataSumHUs(), endDate = input$endDate)
+    fxnFigureTitle(inData = dataAZMetDataSumHUs(), endDate = input$endDate)
   })
   
   # Outputs -----
