@@ -1,4 +1,4 @@
-#' fxnAZMetDataSumHUs: calculates heat unit accumulation based on user input
+#' `fxnAZMetDataSumHUs` calculates heat unit accumulation based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param startDate - Start date of period of interest

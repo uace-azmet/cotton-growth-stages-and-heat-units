@@ -1,5 +1,3 @@
-
-
 # Calculate growing-season heat accumulation relative to cotton development
 
 # Libraries
@@ -142,8 +140,8 @@ server <- function(input, output, session) {
   # Build figure
   figure <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigure(
-      inData = dataAZMetDataSumHUs(), 
       azmetStation = input$azmetStation,
+      inData = dataAZMetDataSumHUs(), 
       startDate = input$plantingDate, 
       endDate = input$endDate
     )

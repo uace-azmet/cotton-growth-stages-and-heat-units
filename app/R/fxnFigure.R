@@ -1,14 +1,13 @@
-#' fxnFigure: generates bar chart of cumulative heat units of current and recent years with cotton growth stage labels
+#' `fxnFigure` generates bar chart of cumulative heat units of current and recent years with cotton growth stage labels
 #' 
-#' @param inData - data table of seasonal heat accumulation values by year
 #' @param azmetStation - AZMet station selection by user
+#' @param inData - data table of seasonal heat accumulation values by year
 #' @param startDate - Planting date of period of interest
 #' @param endDate - End date of period of interest
 #' @return `figure` - png of figure
-#' 
 
 
-fxnFigure <- function(inData, azmetStation, startDate, endDate) {
+fxnFigure <- function(azmetStation, inData, startDate, endDate) {
   figure <- ggplot2::ggplot(
     data = inData, 
     mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative)
@@ -22,13 +21,13 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
     geom_col( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
-      alpha = 1.0, fill = "#999999"
+      alpha = 1.0, fill = "#bdbdbd" ##999999
     ) +
     
     geom_col( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
       mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
-      alpha = 1.0, fill = "#001C48"
+      alpha = 1.0, fill = "#343a40"
     ) +
     
     geom_hline( # Cotton growth stages as cumulative heat units
@@ -40,13 +39,13 @@ fxnFigure <- function(inData, azmetStation, startDate, endDate) {
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#999999", fill = NA, label.size = NA, size = 3, vjust = 0.0
+      color = "#bdbdbd", fill = NA, label.size = NA, size = 3, vjust = 0.0 ##999999
     ) +
     
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#001C48", fill = NA, label.size = NA, size = 3, vjust = 0.0
+      color = "#343a40", fill = NA, label.size = NA, size = 3, vjust = 0.0
     ) + 
     
     labs(x = "\nYear", y = "Cumulative Heat Units\n") +
