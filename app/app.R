@@ -93,7 +93,12 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figure"))
       ), 
       
-      br(), br(),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput("figureCaption"))
+      ),
+      
+      br(), br(), br(),
+      
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureFooterHelpText"))
       ),
@@ -101,6 +106,7 @@ ui <- htmltools::htmlTemplate(
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureFooter"))
       ),
+      
       br()
     ) # mainPanel()
   ) # sidebarLayout()
@@ -147,6 +153,11 @@ server <- function(input, output, session) {
     )
   })
   
+  # Build figure caption
+  figureCaption <- eventReactive(dataAZMetDataSumHUs(), {
+    fxnFigureCaption(azmetStation = input$azmetStation, inData = dataAZMetDataSumHUs())
+  })
+  
   # Build figure footer
   figureFooter <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureFooter(
@@ -157,7 +168,7 @@ server <- function(input, output, session) {
     )
   })
   
-  # Build table footer help text
+  # Build figure footer help text
   figureFooterHelpText <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureFooterHelpText()
   })
@@ -185,6 +196,10 @@ server <- function(input, output, session) {
   output$figure <- renderPlot({
     figure()
   }, res = 96)
+  
+  output$figureCaption <- renderUI({
+    figureCaption()
+  })
   
   output$figureFooter <- renderUI({
     figureFooter()

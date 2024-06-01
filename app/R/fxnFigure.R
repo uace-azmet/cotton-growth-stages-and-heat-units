@@ -14,14 +14,18 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
   ) +
     
     # Cotton growth stages as cumulative heat units (https://www.color-hex.com/color/CCCCCC)
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 1800, ymax = 2200, alpha = 0.1, fill = "#CCCCCC") + # Peak Bloom
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 2400, ymax = 2800, alpha = 0.1, fill = "#CCCCCC") + # Cutout
-    geom_rect(xmin = -Inf, xmax = Inf, ymin = 3000, ymax = 3400, alpha = 0.1, fill = "#CCCCCC") + # Terminate
+    #geom_rect(xmin = -Inf, xmax = Inf, ymin = 1800, ymax = 2200, alpha = 0.1, fill = "#CCCCCC") + # Peak Bloom
+    #geom_rect(xmin = -Inf, xmax = Inf, ymin = 2400, ymax = 2800, alpha = 0.1, fill = "#CCCCCC") + # Cutout
+    #geom_rect(xmin = -Inf, xmax = Inf, ymin = 3000, ymax = 3400, alpha = 0.1, fill = "#CCCCCC") + # Terminate
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 1800, ymax = 2200, alpha = 0.1, fill = "#e0e0e0") + # Peak Bloom
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 2400, ymax = 2800, alpha = 0.1, fill = "#e0e0e0") + # Cutout
+    geom_rect(xmin = -Inf, xmax = Inf, ymin = 3000, ymax = 3400, alpha = 0.1, fill = "#e0e0e0") + # Terminate
     
     geom_col( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
-      alpha = 1.0, fill = "#bdbdbd" ##999999
+      #alpha = 1.0, fill = "#999999"
+      alpha = 1.0, fill = "#bdbdbd"
     ) +
     
     geom_col( # Current growing season
@@ -33,22 +37,23 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     geom_hline( # Cotton growth stages as cumulative heat units
       data = dataCottonGrowthStages, 
       mapping = aes(yintercept = huapValue), 
-      alpha = 1.0, color = "#CCCCCC", linetype = "solid", linewidth = 0.3
+      #alpha = 1.0, color = "#CCCCCC", linetype = "solid", linewidth = 0.3
+      alpha = 1.0, color = "#e0e0e0", linetype = "solid", linewidth = 0.3
     ) +
     
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#bdbdbd", fill = NA, label.size = NA, size = 3, vjust = 0.0 ##999999
+      color = "#bdbdbd", fill = NA, label.size = NA, size = 3.5, vjust = 0.0 ##999999
     ) +
     
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#343a40", fill = NA, label.size = NA, size = 3, vjust = 0.0
+      color = "#343a40", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
     ) + 
     
-    labs(x = "\nYear", y = "Cumulative Heat Units\n") +
+    labs(x = "\nYear\n", y = "Cumulative Heat Units\n") +
     
     scale_y_continuous(
       breaks = dataCottonGrowthStages$huapValue, 
@@ -66,7 +71,8 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       #title,
       #aspect.ratio,
       axis.title = element_text(
-        color = "#343a40", face = "plain", size = 10, hjust = 0.0, 
+        #color = "#343a40", face = "plain", size = 10, hjust = 0.0, 
+        color = "#757575", face = "plain", size = 10, hjust = 0.0, 
         margin = margin(t = 0.2, r = 0, b = 0, l = 0, unit = "cm")
       ),
       #axis.title.x,
@@ -76,10 +82,12 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       #axis.title.y.left,
       axis.title.y.right = element_blank(),
       #axis.text,
-      axis.text.x = element_text(color = "#343a40", face = "plain", size = 10),
+      #axis.text.x = element_text(color = "#343a40", face = "plain", size = 10),
+      axis.text.x = element_text(color = "#757575", face = "plain", size = 10),
       #axis.text.x.top,
       #axis.text.x.bottom,
-      axis.text.y = element_text(color = "#343a40", face = "plain", size = 10),
+      #axis.text.y = element_text(color = "#343a40", face = "plain", size = 10),
+      axis.text.y = element_text(color = "#757575", face = "plain", size = 10),
       #axis.text.y.left,
       #axis.text.y.right,
       #axis.ticks,
