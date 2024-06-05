@@ -44,14 +44,14 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#999999", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
+      color = "#999999", fill = NA, label.size = NA, size = 3.0, vjust = 0.0
       #color = "#bdbdbd", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
     ) +
     
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#343a40", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
+      color = "#343a40", fill = NA, label.size = NA, size = 3.0, vjust = 0.0
     ) + 
     
     labs(x = "\nYear\n", y = "Cumulative Heat Units (Degree-days in °F)\n") +
@@ -73,7 +73,7 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       #aspect.ratio,
       axis.title = element_text(
         #color = "#343a40", face = "plain", size = 10, hjust = 0.0, 
-        color = "#757575", face = "plain", size = 10, hjust = 0.0, 
+        color = "#757575", face = "plain", size = 9, hjust = 0.0, 
         margin = margin(t = 0.2, r = 0, b = 0, l = 0, unit = "cm")
       ),
       #axis.title.x,
@@ -84,11 +84,11 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       axis.title.y.right = element_blank(),
       #axis.text,
       #axis.text.x = element_text(color = "#343a40", face = "plain", size = 10),
-      axis.text.x = element_text(color = "#757575", face = "plain", size = 10),
+      axis.text.x = element_text(color = "#757575", face = "plain", size = 9),
       #axis.text.x.top,
       #axis.text.x.bottom,
       #axis.text.y = element_text(color = "#343a40", face = "plain", size = 10),
-      axis.text.y = element_text(color = "#757575", face = "plain", size = 10),
+      axis.text.y = element_text(color = "#757575", face = "plain", size = 9),
       #axis.text.y.left,
       #axis.text.y.right,
       #axis.ticks,

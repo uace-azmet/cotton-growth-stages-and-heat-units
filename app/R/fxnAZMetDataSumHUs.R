@@ -30,7 +30,7 @@ fxnAZMetDataSumHUs <- function(azmetStation, startDate, endDate) {
   dataAZMetDataSumHUs <- dataAZMetDataMerge %>%
     dplyr::group_by(date_year) %>%
     dplyr::summarize(heat_units_55F_cumulative = sum(heat_units_55F, na.rm = TRUE)) %>%
-    dplyr::mutate(labelHUs = format(round(heat_units_55F_cumulative, digits = 1), nsmall = 1))
+    dplyr::mutate(labelHUs = format(round(heat_units_55F_cumulative, digits = 0), nsmall = 0))
   
   return(dataAZMetDataSumHUs)
 }
