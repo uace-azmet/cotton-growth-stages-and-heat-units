@@ -44,7 +44,8 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     geom_label( # Previous growing season
       data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
       mapping = aes(label = .data$labelHUs, fontface = "bold"), 
-      color = "#bdbdbd", fill = NA, label.size = NA, size = 3.5, vjust = 0.0 ##999999
+      color = "#999999", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
+      #color = "#bdbdbd", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
     ) +
     
     geom_label( # Current growing season
@@ -53,7 +54,7 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       color = "#343a40", fill = NA, label.size = NA, size = 3.5, vjust = 0.0
     ) + 
     
-    labs(x = "\nYear\n", y = "Cumulative Heat Units\n") +
+    labs(x = "\nYear\n", y = "Cumulative Heat Units (Degree-days in °F)\n") +
     
     scale_y_continuous(
       breaks = dataCottonGrowthStages$huapValue, 

@@ -7,9 +7,9 @@ stationNames <- vroom::vroom(
 )
 
 # Omit for now, as previous years are not a complete growing season and not comparable
-stationNames <- stationNames %>%
-  dplyr::filter(stationName != "Yuma Valley ETo") %>%
-  dplyr::filter(stationName != "Wellton ETo")
+stationNames <- stationNames |>
+  dplyr::filter(stationName != "Wellton ETo") |>
+  dplyr::filter(stationName != "Yuma Valley ETo")
 
 # Set auxiliary variables
 if (Sys.Date() < as.Date(paste0(lubridate::year(Sys.Date()), "-02-02"))) {

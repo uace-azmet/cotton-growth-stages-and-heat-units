@@ -17,6 +17,16 @@ fxnAZMetDataSumHUs <- function(azmetStation, startDate, endDate) {
       dplyr::filter(date_year != 2021)
   }
   
+  #if (azmetStation == "Wellton ETo") {
+  #  dataAZMetDataMerge <- dataAZMetDataMerge %>%
+  #    dplyr::filter(date_year >= 2024)
+  #}
+  
+  #if (azmetStation == "Yuma Valley ETo") {
+  #  dataAZMetDataMerge <- dataAZMetDataMerge %>%
+  #    dplyr::filter(date_year >= 2024)
+  #}
+  
   dataAZMetDataSumHUs <- dataAZMetDataMerge %>%
     dplyr::group_by(date_year) %>%
     dplyr::summarize(heat_units_55F_cumulative = sum(heat_units_55F, na.rm = TRUE)) %>%

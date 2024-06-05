@@ -7,7 +7,7 @@
 #' @return `figureCaption` Caption for figure based on selected station
 
 
-fxnfigureCaption <- function(azmetStation, inData, startDate, endDate) {
+fxnFigureCaption <- function(azmetStation, inData, startDate, endDate) {
   
   # Build caption text
   figureCaption <- 
