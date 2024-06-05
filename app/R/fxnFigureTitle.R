@@ -27,9 +27,11 @@ fxnFigureTitle <- function(inData, endDate) {
         class = "figure-title"
       )
   } else {
-    if (currentYearHUs > (previousYearHUs + (0.1 * previousYearHUs))) {
+    #if (currentYearHUs > (previousYearHUs + (0.1 * previousYearHUs))) {
+    if (currentYearHUs - previousYearHUs > 50) {
       comparisonText <- "Greater than"
-    } else if (currentYearHUs < (previousYearHUs - (0.1 * previousYearHUs))) {
+    #} else if (currentYearHUs < (previousYearHUs - (0.1 * previousYearHUs))) {
+    } else if (previousYearHUs - currentYearHUs > 50) {
       comparisonText <- "Less than"
     } else {
       comparisonText <- "Similar to"

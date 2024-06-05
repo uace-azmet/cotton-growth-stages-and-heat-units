@@ -1,4 +1,4 @@
-#' fxnAZMetDataSumHUs: calculates heat unit accumulation based on user input
+#' `fxnAZMetDataSumHUs` calculates heat unit accumulation based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param startDate - Start date of period of interest
@@ -16,6 +16,16 @@ fxnAZMetDataSumHUs <- function(azmetStation, startDate, endDate) {
     dataAZMetDataMerge <- dataAZMetDataMerge %>%
       dplyr::filter(date_year != 2021)
   }
+  
+  #if (azmetStation == "Wellton ETo") {
+  #  dataAZMetDataMerge <- dataAZMetDataMerge %>%
+  #    dplyr::filter(date_year >= 2024)
+  #}
+  
+  #if (azmetStation == "Yuma Valley ETo") {
+  #  dataAZMetDataMerge <- dataAZMetDataMerge %>%
+  #    dplyr::filter(date_year >= 2024)
+  #}
   
   dataAZMetDataSumHUs <- dataAZMetDataMerge %>%
     dplyr::group_by(date_year) %>%

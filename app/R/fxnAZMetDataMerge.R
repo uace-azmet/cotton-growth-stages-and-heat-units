@@ -1,4 +1,4 @@
-#' fxnAZMetDataMerge: downloads and merges individual-year data since API database start and based on user input
+#' `fxnAZMetDataMerge` downloads and merges individual-year data since API database start and based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param startDate - Start date of period of interest
