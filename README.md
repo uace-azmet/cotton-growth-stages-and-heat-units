@@ -1,2 +1,2 @@
 # cotton-growth-stages-and-heat-units
-Shiny app that uses cumulative heat units to estimate cotton growth stages by AZMet station and date range
+Shiny app that uses cumulative heat units at individual AZMet stations and by date range to estimate cotton growth stages
