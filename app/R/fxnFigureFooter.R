@@ -68,41 +68,22 @@ fxnFigureFooter <- function(azmetStation, startDate, endDate, timeStep) {
   )
   
   # Footer text
-  if (endDate > as.Date(paste0(lubridate::year(Sys.Date()), "-06-15")) & azmetStation == "Yuma North Gila") {
-    figureFooter <- 
-      htmltools::p(
-        htmltools::HTML(
-          paste0(
-            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (dark blue bar in graph) from", " ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " ", "through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. Tables of daily values of heat units for individual stations and the current growing season currently are available from the AZMet webpage with ", heatUnitsWebpageURL, ".", " ", "More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ", "Cumulative heat unit data for the Yuma North Gila station are unavailable in 2021 after June 15.",  
-            br(), br(), 
-            timeStep, " ", "AZMet data are from", " ", apiURL, " and accessed using the ", azmetrURL, " R package. Values from recent dates may be based on provisional data", ".", " ", "More information about", " ", webpageDataVariables, ",", " ", webpageNetworkMap, ",", " ", "and", " ", webpageStationMetadata, " ", "is available on the", " ", webpageAZMet, ".", " ", "Users of AZMet data and related information assume all risks of its use", ".",
-            br(), br(),
-            "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed", " ", todayDate, "'.",
-            br(), br(),
-            "For information on how this webpage is put together, please visit the", " ", webpageCode, " ", "for this tool."
-          )
-        ),
-        
-        class = "figure-footer"
-      )
-  } else {
-    figureFooter <- 
-      htmltools::p(
-        htmltools::HTML(
-          paste0(
-            "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively, and represent accumulations of daily values for the current growing season (dark blue bar in graph) from", " ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " ", "through", " ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ".", " ", "Accumulation values of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. Tables of daily values of heat units for individual stations and the current growing season currently are available from the AZMet webpage with ", heatUnitsWebpageURL, ".", " ", "More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin", " ", bulletinURL, ".", " ",  
-            br(), br(), 
-            timeStep, " ", "AZMet data are from", " ", apiURL, " and accessed using the ", azmetrURL, " R package. Values from recent dates may be based on provisional data", ".", " ", "More information about", " ", webpageDataVariables, ",", " ", webpageNetworkMap, ",", " ", "and", " ", webpageStationMetadata, " ", "is available on the", " ", webpageAZMet, ".", " ", "Users of AZMet data and related information assume all risks of its use", ".",
-            br(), br(),
-            "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed ", todayDate, "', along with 'Arizona Meteorological Network (", todayYear, ") Cotton Growth Stages and Heat Units. https://viz.datascience.arizona.edu/azmet/cotton-growth-stages-and-heat-units. Accessed ", todayDate, "'.",
-            br(), br(),
-            "For information on how this webpage is put together, please visit the", " ", webpageCode, " ", "for this tool."
-          )
-        ),
-        
-        class = "figure-footer"
-      )
-  }
+  figureFooter <- 
+    htmltools::p(
+      htmltools::HTML(
+        paste0(
+          "Heat units are based on the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively. The cumulative heat unit total for the current growing season (dark gray bar in graph) represents the accumulation of daily totals from ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " through ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), ". Accumulation totals of heat units for past growing seasons (gray bars in graph) are based on the same planting and end dates, but during those respective years. Tables of daily totals of heat units for individual stations and the current growing season currently are available from the AZMet webpage with ", heatUnitsWebpageURL, ". More information on this method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin ", bulletinURL, ".",  
+          br(), br(), 
+          timeStep, " AZMet data are from ", apiURL, " and accessed using the ", azmetrURL, " R package. Values from recent dates may be based on provisional data. More information about ", webpageDataVariables, ", ", webpageNetworkMap, ", and ", webpageStationMetadata, " is available on the ", webpageAZMet, ". Users of AZMet data and related information assume all risks of its use.",
+          br(), br(),
+          "To cite the above AZMet data, please use: 'Arizona Meteorological Network (", todayYear, ") Arizona Meteorological Network (AZMet) Data. https://azmet.arizona.edu. Accessed ", todayDate, "', along with 'Arizona Meteorological Network (", todayYear, ") Cotton Growth Stages and Heat Units. https://viz.datascience.arizona.edu/azmet/cotton-growth-stages-and-heat-units. Accessed ", todayDate, "'.",
+          br(), br(),
+          "For information on how this webpage is put together, please visit the ", webpageCode, " for this tool."
+        )
+      ),
+      
+      class = "figure-footer"
+    )
   
   return(figureFooter)
 }

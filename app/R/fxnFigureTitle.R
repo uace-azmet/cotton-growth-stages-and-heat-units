@@ -19,7 +19,7 @@ fxnFigureTitle <- function(inData, endDate) {
       htmltools::h4(
         htmltools::HTML(
           paste(
-            "Heat Accumulation in", currentYear,
+            "Cumulative Heat Units in", currentYear,
             sep = " "
           ),
         ),
@@ -41,7 +41,7 @@ fxnFigureTitle <- function(inData, endDate) {
       htmltools::h4(
         htmltools::HTML(
           paste(
-            "Heat Accumulation in", currentYear, comparisonText, "That in", previousYear,
+            "Cumulative Heat Units in", currentYear, comparisonText, "That in", previousYear,
             sep = " "
           ),
         ),
