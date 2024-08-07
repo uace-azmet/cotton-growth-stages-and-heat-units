@@ -31,14 +31,14 @@ ui <- htmltools::htmlTemplate(
       
       verticalLayout(
         helpText(em(
-          "Select an AZMet station and set dates for planting and the end of the period of interest. Then, click or tap 'CALCULATE HEAT ACCUMULATION'."
+          "Select an AZMet station and set dates for planting and the end of the period of interest. Then, click or tap 'CALCULATE HEAT UNITS'."
         )),
         
         br(),
         selectInput(
           inputId = "azmetStation", 
           label = "AZMet Station",
-          choices = stationNames[order(stationNames$stationName), ]$stationName,
+          choices = azmetStations[order(azmetStations$stationName), ]$stationName,
           selected = "Aguila"
         ),
         
@@ -70,8 +70,8 @@ ui <- htmltools::htmlTemplate(
         
         br(),
         actionButton(
-          inputId = "calculateHeatAccumulation", 
-          label = "CALCULATE HEAT ACCUMULATION",
+          inputId = "calculateHeatUnits", 
+          label = "CALCULATE HEAT UNITS",
           class = "btn btn-block btn-blue"
         )
       )
@@ -93,11 +93,11 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, plotOutput(outputId = "figure"))
       ), 
       
-      #fluidRow(
-      #  column(width = 11, align = "left", offset = 1, htmlOutput("figureCaption"))
-      #),
+      br(),
+      fluidRow(
+        column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureSubtext"))
+      ),
       
-      #br(), br(), br(),
       br(), br(),
       
       fluidRow(
@@ -121,21 +121,21 @@ server <- function(input, output, session) {
   # Reactive events -----
   
   # AZMet heat-unit accumulation data
-  dataAZMetDataSumHUs <- eventReactive(input$calculateHeatAccumulation, {
+  dataAZMetDataSumHUs <- eventReactive(input$calculateHeatUnits, {
     validate(
       need(expr = input$plantingDate <= input$endDate, message = FALSE)
     )
     
-    idCalculatingHeatAccumulation <- showNotification(
-      ui = "Calculating heat accumulation . . .", 
+    idCalculatingHeatUnits <- showNotification(
+      ui = "Calculating heat units . . .", 
       action = NULL, 
       duration = NULL, 
       closeButton = FALSE,
-      id = "idCalculatingHeatAccumulation",
+      id = "idCalculatingHeatUnits",
       type = "message"
     )
     
-    on.exit(removeNotification(id = idCalculatingHeatAccumulation), add = TRUE)
+    on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
     
     # Calls 'fxnAZMetDataMerge()', which calls 'fxnAZMetDataELT()'
     fxnAZMetDataSumHUs(
@@ -154,11 +154,6 @@ server <- function(input, output, session) {
     )
   })
   
-  # Build figure caption
-  #figureCaption <- eventReactive(dataAZMetDataSumHUs(), {
-  #  fxnFigureCaption(azmetStation = input$azmetStation, inData = dataAZMetDataSumHUs())
-  #})
-  
   # Build figure footer
   figureFooter <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureFooter(
@@ -174,13 +169,26 @@ server <- function(input, output, session) {
     fxnFigureFooterHelpText()
   })
   
+  # Build figure subtext
+  figureSubtext <- eventReactive(dataAZMetDataSumHUs(), {
+    fxnFigureSubtext(
+      azmetStation = input$azmetStation,
+      startDate = input$startDate, 
+      endDate = input$endDate
+    )
+  })
+  
   # Build figure subtitle
   figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
-    fxnFigureSubtitle(azmetStation = input$azmetStation, startDate = input$plantingDate, endDate = input$endDate)
+    fxnFigureSubtitle(
+      azmetStation = input$azmetStation, 
+      inData = dataAZMetDataSumHUs(),
+      startDate = input$plantingDate, 
+      endDate = input$endDate)
   })
   
   # Build figure title
-  figureTitle <- eventReactive(input$calculateHeatAccumulation, {
+  figureTitle <- eventReactive(input$calculateHeatUnits, {
     validate(
       need(
         expr = input$plantingDate <= input$endDate, 
@@ -198,16 +206,16 @@ server <- function(input, output, session) {
     figure()
   }, res = 96)
   
-  #output$figureCaption <- renderUI({
-  #  figureCaption()
-  #})
-  
   output$figureFooter <- renderUI({
     figureFooter()
   })
   
   output$figureFooterHelpText <- renderUI({
     figureFooterHelpText()
+  })
+  
+  output$figureSubtext <- renderUI({
+    figureSubtext()
   })
   
   output$figureSubtitle <- renderUI({
