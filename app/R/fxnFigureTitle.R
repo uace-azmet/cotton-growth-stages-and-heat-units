@@ -6,50 +6,20 @@
 
 
 fxnFigureTitle <- function(inData, endDate) {
-  currentYear <- lubridate::year(endDate)
-  currentYearHUs <- 
-    inData$heat_units_55F_cumulative[which(inData$date_year == currentYear)]
+  heatSum <- 
+    dplyr::filter(inData, date_year == lubridate::year(endDate))$heat_units_55F_cumulative
+  heatSum <- format(round(heatSum, digits = 1), nsmall = 1)
   
-  previousYear <- currentYear - 1
-  previousYearHUs <- 
-    inData$heat_units_55F_cumulative[which(inData$date_year == previousYear)]
-  
-  if (nrow(inData) < 2) {
-    figureTitle <- 
-      htmltools::h4(
-        htmltools::HTML(
-          paste(
-            "Cumulative Heat Units in", currentYear,
-            sep = " "
-          ),
+  figureTitle <- 
+    htmltools::h4(
+      htmltools::HTML(
+        paste0(
+          "<b>", heatSum, " degree days Fahrenheit", "</b>"
         ),
-        
-        class = "figure-title"
-      )
-  } else {
-    #if (currentYearHUs > (previousYearHUs + (0.1 * previousYearHUs))) {
-    if (currentYearHUs - previousYearHUs > 50) {
-      comparisonText <- "Greater than"
-    #} else if (currentYearHUs < (previousYearHUs - (0.1 * previousYearHUs))) {
-    } else if (previousYearHUs - currentYearHUs > 50) {
-      comparisonText <- "Less than"
-    } else {
-      comparisonText <- "Similar to"
-    }
-    
-    figureTitle <- 
-      htmltools::h4(
-        htmltools::HTML(
-          paste(
-            "Cumulative Heat Units in", currentYear, comparisonText, "That in", previousYear,
-            sep = " "
-          ),
-        ),
-        
-        class = "figure-title"
-      )
-    
-  }
+      ),
+      
+      class = "figure-title"
+    )
   
   return(figureTitle)
 }

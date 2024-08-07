@@ -182,6 +182,7 @@ server <- function(input, output, session) {
   figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
     fxnFigureSubtitle(
       azmetStation = input$azmetStation, 
+      inData = dataAZMetDataSumHUs(),
       startDate = input$plantingDate, 
       endDate = input$endDate)
   })
