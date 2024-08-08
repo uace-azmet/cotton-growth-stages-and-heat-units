@@ -9,7 +9,6 @@ azmetStations <- vroom::vroom(
 # Omit for now, as previous years are not a complete growing season and not comparable
 azmetStations <- azmetStations |>
   dplyr::filter(stationName != "Wellton ETo") |>
-  dplyr::filter(stationName != "Yuma North Gila") |>
   dplyr::filter(stationName != "Yuma Valley ETo")
 
 # Set auxiliary variables

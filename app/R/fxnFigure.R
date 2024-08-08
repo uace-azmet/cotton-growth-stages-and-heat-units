@@ -10,7 +10,7 @@
 fxnFigure <- function(azmetStation, inData, startDate, endDate) {
   figure <- ggplot2::ggplot(
     data = inData, 
-    mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative)
+    mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum)
   ) +
     
     # Cotton growth stages as cumulative heat units (https://www.color-hex.com/color-palette/1041718)
@@ -25,30 +25,30 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     ) +
     
     geom_col( # Previous growing season
-      data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
-      mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
+      data = dplyr::filter(inData, inData$dateYear < max(inData$dateYear)), 
+      mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum), 
       alpha = 1.0, fill = "#989898"
     ) +
     
     geom_col( # Current growing season
-      data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
-      mapping = aes(x = as.factor(.data$date_year), y = .data$heat_units_55F_cumulative), 
+      data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
+      mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum), 
       alpha = 1.0, fill = "#3b3b3b"
     ) +
     
     geom_label( # Previous growing season
-      data = dplyr::filter(inData, inData$date_year < max(inData$date_year)), 
-      mapping = aes(label = .data$labelHUs, fontface = "bold"), 
+      data = dplyr::filter(inData, inData$dateYear < max(inData$dateYear)), 
+      mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
       color = "#989898", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
     ) +
     
     geom_label( # Current growing season
-      data = dplyr::filter(inData, inData$date_year == max(inData$date_year)), 
-      mapping = aes(label = .data$labelHUs, fontface = "bold"), 
+      data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
+      mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
       color = "#3b3b3b", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
     ) + 
     
-    labs(x = "\nYear\n", y = "Degree Days Fahrenheit\n") +
+    labs(x = "\nYear", y = "Degree Days Fahrenheit\n") +
     
     scale_y_continuous(
       breaks = dataCottonGrowthStages$huapValue, 
