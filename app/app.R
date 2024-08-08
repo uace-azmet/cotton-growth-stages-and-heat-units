@@ -121,7 +121,7 @@ server <- function(input, output, session) {
   # Reactive events -----
   
   # AZMet heat-unit accumulation data
-  dataAZMetDataSumHUs <- eventReactive(input$calculateHeatUnits, {
+  dataAZMetDataMerge <- eventReactive(input$calculateHeatUnits, {
     validate(
       need(expr = input$plantingDate <= input$endDate, message = FALSE)
     )
@@ -137,25 +137,26 @@ server <- function(input, output, session) {
     
     on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
     
-    # Calls 'fxnAZMetDataMerge()', which calls 'fxnAZMetDataELT()'
-    fxnAZMetDataSumHUs(
+    # Calls calls 'fxnAZMetDataELT()' and 'fxnAZMetDataHeatSum()'
+    fxnAZMetDataMerge(
       azmetStation = input$azmetStation, 
       startDate = input$plantingDate, 
-      endDate = input$endDate)
+      endDate = input$endDate
+    )
   })
   
   # Build figure
-  figure <- eventReactive(dataAZMetDataSumHUs(), {
+  figure <- eventReactive(dataAZMetDataMerge(), {
     fxnFigure(
       azmetStation = input$azmetStation,
-      inData = dataAZMetDataSumHUs(), 
+      inData = dataAZMetDataMerge(), 
       startDate = input$plantingDate, 
       endDate = input$endDate
     )
   })
   
   # Build figure footer
-  figureFooter <- eventReactive(dataAZMetDataSumHUs(), {
+  figureFooter <- eventReactive(dataAZMetDataMerge(), {
     fxnFigureFooter(
       azmetStation = input$azmetStation,
       startDate = input$plantingDate, 
@@ -165,12 +166,12 @@ server <- function(input, output, session) {
   })
   
   # Build figure footer help text
-  figureFooterHelpText <- eventReactive(dataAZMetDataSumHUs(), {
+  figureFooterHelpText <- eventReactive(dataAZMetDataMerge(), {
     fxnFigureFooterHelpText()
   })
   
   # Build figure subtext
-  figureSubtext <- eventReactive(dataAZMetDataSumHUs(), {
+  figureSubtext <- eventReactive(dataAZMetDataMerge(), {
     fxnFigureSubtext(
       azmetStation = input$azmetStation,
       startDate = input$startDate, 
@@ -179,10 +180,10 @@ server <- function(input, output, session) {
   })
   
   # Build figure subtitle
-  figureSubtitle <- eventReactive(dataAZMetDataSumHUs(), {
+  figureSubtitle <- eventReactive(dataAZMetDataMerge(), {
     fxnFigureSubtitle(
       azmetStation = input$azmetStation, 
-      inData = dataAZMetDataSumHUs(),
+      inData = dataAZMetDataMerge(),
       startDate = input$plantingDate, 
       endDate = input$endDate)
   })
@@ -197,7 +198,7 @@ server <- function(input, output, session) {
       errorClass = "datepicker"
     )
     
-    fxnFigureTitle(inData = dataAZMetDataSumHUs(), endDate = input$endDate)
+    fxnFigureTitle(inData = dataAZMetDataMerge(), endDate = input$endDate)
   })
   
   # Outputs -----

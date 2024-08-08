@@ -9,7 +9,7 @@
 
 fxnFigureSubtitle <- function(azmetStation, inData, startDate, endDate) {
   currentYear <- lubridate::year(endDate)
-  currentYearHeatSum <- dplyr::filter(inData, date_year == currentYear)$heat_units_55F_cumulative
+  currentYearHeatSum <- dplyr::filter(inData, dateYear == currentYear)$heatSum
   
   if (currentYearHeatSum < 650) {
     growthStageText <- "before Pinhead Square"

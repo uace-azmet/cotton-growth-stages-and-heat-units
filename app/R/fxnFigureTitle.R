@@ -7,7 +7,7 @@
 
 fxnFigureTitle <- function(inData, endDate) {
   heatSum <- 
-    dplyr::filter(inData, date_year == lubridate::year(endDate))$heat_units_55F_cumulative
+    dplyr::filter(inData, dateYear == lubridate::year(endDate))$heatSum
   heatSum <- format(round(heatSum, digits = 1), nsmall = 1)
   
   figureTitle <- 
