@@ -98,7 +98,7 @@ ui <- htmltools::htmlTemplate(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureSubtext"))
       ),
       
-      br(), br(),
+      br(),
       
       fluidRow(
         column(width = 11, align = "left", offset = 1, htmlOutput(outputId = "figureFooterHelpText"))
@@ -174,7 +174,7 @@ server <- function(input, output, session) {
   figureSubtext <- eventReactive(dataAZMetDataMerge(), {
     fxnFigureSubtext(
       azmetStation = input$azmetStation,
-      startDate = input$startDate, 
+      startDate = input$plantingDate, 
       endDate = input$endDate
     )
   })

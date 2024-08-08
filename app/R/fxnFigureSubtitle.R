@@ -51,31 +51,16 @@ fxnFigureSubtitle <- function(azmetStation, inData, startDate, endDate) {
     growthStageText <- "past Terminate (Long)"
   }
   
-  # TODO: Add average information
-  # TODO: if() for != MOH, WEL, YUE, YUG
-  if (nrow(inData) == 1) {
-    figureSubtitle <- 
-      htmltools::p(
-        htmltools::HTML(
-          paste0(
-            "Heat unit accumulation at the AZMet ", azmetStation, " station from ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " through ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), " is ", format(round(currentYearHeatSum, digits = 1), nsmall = 1), " degree days Fahrenheit."
-          ),
+  figureSubtitle <- 
+    htmltools::p(
+      htmltools::HTML(
+        paste0(
+          "Heat unit accumulation at the AZMet ", azmetStation, " station from ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " through ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), " is ", format(round(currentYearHeatSum, digits = 1), nsmall = 1), " degree days Fahrenheit. This suggests a cotton growth stage ", "<b>", growthStageText, "</b>."
         ),
-        
-        class = "figure-subtitle"
-      )
-  } else {
-    figureSubtitle <- 
-      htmltools::p(
-        htmltools::HTML(
-          paste0(
-            "Heat unit accumulation at the AZMet ", azmetStation, " station from ", gsub(" 0", " ", format(startDate, "%B %d, %Y")), " through ", gsub(" 0", " ", format(endDate, "%B %d, %Y")), " is ", format(round(currentYearHeatSum, digits = 1), nsmall = 1), " degree days Fahrenheit. This suggests a cotton growth stage ", "<b>", growthStageText, "</b>."
-          ),
-        ),
-        
-        class = "figure-subtitle"
-      )
-  }
+      ),
+      
+      class = "figure-subtitle"
+    )
   
   return(figureSubtitle)
 }

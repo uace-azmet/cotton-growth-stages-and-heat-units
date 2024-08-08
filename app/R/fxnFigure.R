@@ -48,7 +48,7 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
       color = "#3b3b3b", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
     ) + 
     
-    labs(x = "\nYear\n", y = "Degree Days Fahrenheit\n") +
+    labs(x = "\nYear", y = "Degree Days Fahrenheit\n") +
     
     scale_y_continuous(
       breaks = dataCottonGrowthStages$huapValue, 
