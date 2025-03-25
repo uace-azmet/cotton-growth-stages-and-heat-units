@@ -113,7 +113,7 @@
         "tibble",
         "tidyselect"
       ],
-      "Hash": "a3017d5fbebe597bec355007837f5e36"
+      "Hash": "ef5e1ec06128764085f0a4174d67de00"
     },
     "base64enc": {
       "Package": "base64enc",
@@ -149,11 +149,25 @@
       ],
       "Hash": "e84984bf5f12a18628d9a02322128dfd"
     },
-    "bslib": {
-      "Package": "bslib",
-      "Version": "0.8.0",
+    "bsicons": {
+      "Package": "bsicons",
+      "Version": "0.1.2",
       "Source": "Repository",
       "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "cli",
+        "htmltools",
+        "rlang",
+        "utils"
+      ],
+      "Hash": "d8f892fbd94d0b9b1f6d688b05b8633c"
+    },
+    "bslib": {
+      "Package": "bslib",
+      "Version": "0.9.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "base64enc",
@@ -169,7 +183,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "b299c6741ca9746fb227debcb0f9fb6c"
+      "Hash": "70a6489cc254171fb9b4a7f130f44dca"
     },
     "cachem": {
       "Package": "cachem",
@@ -211,7 +225,7 @@
       "Package": "commonmark",
       "Version": "1.9.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "14eb0596f987c71535d07c3aff814742"
     },
     "cpp11": {
@@ -483,7 +497,7 @@
       "Package": "jsonlite",
       "Version": "1.8.8",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "methods"
       ],
@@ -786,7 +800,7 @@
       "Package": "shiny",
       "Version": "1.9.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R6",

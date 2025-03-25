@@ -1,12 +1,12 @@
-#' `fxnfigureSubtext.R` - Build caption for figure based on user input
+#' `fxn_figureFooter.R` - Build footer for figure based on user input
 #' 
 #' @param azmetStation AZMet station selection by user
 #' @param startDate - Start date of period of interest
 #' @param endDate - End date of period of interest
-#' @return `figureSubtext` Caption for figure based on selected station
+#' @return `figureFooter` Caption for figure based on selected station
 
 
-fxnFigureSubtext <- function(azmetStation, startDate, endDate) {
+fxn_figureFooter <- function(azmetStation, startDate, endDate) {
   azmetStationStartDate <- apiStartDate # Placeholder for station start date
   nonOperational <- 0
   standardText <- paste0("Data in the new AZMet database currently go back to ", gsub(" 0", " ", format(apiStartDate, "%B %d, %Y")), ".")
@@ -31,9 +31,9 @@ fxnFigureSubtext <- function(azmetStation, startDate, endDate) {
     }
   }
   
-  # Generate figure subtext based on presence/absence of non-operational dates
+  # Generate figure footer based on presence/absence of non-operational dates
   if (azmetStation == "Yuma North Gila" & nonOperational == 1) {
-    figureSubtext <- 
+    figureFooter <- 
       htmltools::p(
         htmltools::HTML(
           paste(
@@ -43,15 +43,15 @@ fxnFigureSubtext <- function(azmetStation, startDate, endDate) {
           )
         ),
         
-        class = "figure-subtext"
+        class = "figure-footer"
       )
   } else {
-    figureSubtext <- 
+    figureFooter <- 
       htmltools::p(
         htmltools::HTML(standardText), 
-        class = "figure-subtext"
+        class = "figure-footer"
       )
   }
   
-  return(figureSubtext)
+  return(figureFooter)
 }
