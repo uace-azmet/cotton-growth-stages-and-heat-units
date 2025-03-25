@@ -6,9 +6,34 @@
 #' @param endDate - End date of period of interest
 #' @return `figure` - png of figure
 
+# https://plotly-r.com/ 
+# https://plotly.com/r/reference/ 
+# https://plotly.github.io/schema-viewer/
+# https://github.com/plotly/plotly.js/blob/c1ef6911da054f3b16a7abe8fb2d56019988ba14/src/components/fx/hover.js#L1596
+# https://www.color-hex.com/color-palette/1041718
+
 
 fxn_figure <- function(azmetStation, inData, startDate, endDate) {
-  figure <- ggplot2::ggplot(
+  inData <- inData %>% 
+    dplyr::mutate(dateYear = as.factor(dateYear))
+  
+  dataCurrentYear <- inData %>% 
+    dplyr::filter(
+      dateYear == lubridate::year(lubridate::today(tz = "America/Phoenix"))
+    )
+  
+  dataOtherYears <- inData %>% 
+    dplyr::filter(
+      dateYear != lubridate::year(lubridate::today(tz = "America/Phoenix"))
+    )
+  
+  
+  
+  
+  
+  
+  
+  toDelete <- ggplot2::ggplot(
     data = inData, 
     mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum)
   ) +
