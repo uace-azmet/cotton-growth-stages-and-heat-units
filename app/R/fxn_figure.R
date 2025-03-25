@@ -1,4 +1,4 @@
-#' `fxnFigure` generates bar chart of cumulative heat units of current and recent years with cotton growth stage labels
+#' `fxn_figure` generates bar chart of cumulative heat units of current and recent years with cotton growth stage labels
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param inData - data table of seasonal heat accumulation values by year
@@ -7,7 +7,7 @@
 #' @return `figure` - png of figure
 
 
-fxnFigure <- function(azmetStation, inData, startDate, endDate) {
+fxn_figure <- function(azmetStation, inData, startDate, endDate) {
   figure <- ggplot2::ggplot(
     data = inData, 
     mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum)
@@ -33,7 +33,7 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     geom_col( # Current growing season
       data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
       mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum), 
-      alpha = 1.0, fill = "#3b3b3b"
+      alpha = 1.0, fill = "#191919"
     ) +
     
     geom_label( # Previous growing season
@@ -45,7 +45,7 @@ fxnFigure <- function(azmetStation, inData, startDate, endDate) {
     geom_label( # Current growing season
       data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
       mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
-      color = "#3b3b3b", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
+      color = "#191919", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
     ) + 
     
     labs(x = "\nYear", y = "Degree Days Fahrenheit\n") +

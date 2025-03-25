@@ -1,25 +1,25 @@
-#' `fxnAZMetDataMerge` downloads and merges individual-year data since API database start and based on user input
+#' `fxn_dataMerge` downloads and merges individual-year data since API database start and based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param startDate - Start date of period of interest
 #' @param endDate - End date of period of interest
-#' @return `dataAZMetDataMerge` - merged data tables from individual years
+#' @return `dataMerge` - merged data tables from individual years
 
 
-fxnAZMetDataMerge <- function(azmetStation, startDate, endDate) {
+fxn_dataMerge <- function(azmetStation, startDate, endDate) {
   azmetStationStartDate <- apiStartDate # Placeholder for station start date
   
   while (startDate >= azmetStationStartDate) {
     
-    dataAZMetDataELT <- fxnAZMetDataELT(
+    dataELT <- fxn_dataELT(
       azmetStation = azmetStation, 
       timeStep = "Daily", 
       startDate = startDate, 
       endDate = endDate
     )
     
-    dataAZMetDataHeatSum <- fxnAZMetDataHeatSum(
-      inData = dataAZMetDataELT,
+    dataHeatSum <- fxn_dataHeatSum(
+      inData = dataELT,
       azmetStation = azmetStation,
       endDate = endDate
     )
@@ -34,20 +34,20 @@ fxnAZMetDataMerge <- function(azmetStation, startDate, endDate) {
       userDateRange <- lubridate::interval(start = startDate, end = endDate)
       
       if (lubridate::int_overlaps(int1 = nodataDateRange, int2 = userDateRange) == TRUE) {
-        dataAZMetDataHeatSum$heatSum <- 0.00
-        dataAZMetDataHeatSum$heatSumLabel <- "NA" 
+        dataHeatSum$heatSum <- 0.00
+        dataHeatSum$heatSumLabel <- "NA" 
       }
     }
     
-    if (exists("dataAZMetDataMerge") == FALSE) {
-      dataAZMetDataMerge <- dataAZMetDataHeatSum
+    if (exists("dataMerge") == FALSE) {
+      dataMerge <- dataHeatSum
     } else {
-      dataAZMetDataMerge <- rbind(dataAZMetDataMerge, dataAZMetDataHeatSum)
+      dataMerge <- rbind(dataMerge, dataHeatSum)
     }
     
     startDate <- min(seq(startDate, length = 2, by = "-1 year"))
     endDate <- min(seq(endDate, length = 2, by = "-1 year"))
   }
   
-  return(dataAZMetDataMerge)
+  return(dataMerge)
 }
