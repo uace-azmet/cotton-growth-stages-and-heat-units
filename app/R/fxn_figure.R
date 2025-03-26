@@ -11,25 +11,22 @@
 
 
 fxn_figure <- function(inData) {
-  inData <- inData %>% 
-    dplyr::mutate(dateYear = as.factor(dateYear))
-  
   dataCurrentYear <- inData %>% 
     dplyr::filter(
       dateYear == lubridate::year(lubridate::today(tz = "America/Phoenix"))
-    )
+    ) %>% 
+    dplyr::mutate(dateYear = as.factor(dateYear))
   
   dataOtherYears <- inData %>% 
     dplyr::filter(
       dateYear != lubridate::year(lubridate::today(tz = "America/Phoenix"))
-    )
+    ) %>% 
+    dplyr::mutate(dateYear = as.factor(dateYear))
   
   
   
   figure <- 
-    plotly::plot_ly() %>% 
-    
-    plotly::add_trace( # Bars for `dataOtherYears`
+    plotly::plot_ly( # Bars for `dataOtherYears`
       data = dataOtherYears,
       x = ~dateYear,
       y = ~heatSum,
@@ -69,7 +66,7 @@ fxn_figure <- function(inData) {
       scrollZoom = FALSE,
       toImageButtonOptions = list(
         format = "png", # Either png, svg, jpeg, or webp
-        filename = "AZMet-data-viewer-15minute-station-level-summaries",
+        filename = "AZMet-cotton-growth-stages-and-heat-units",
         height = 400,
         width = 700,
         scale = 5
@@ -345,7 +342,7 @@ fxn_figure <- function(inData) {
     )
   #toDelete
   
-  #plotly::ggplotly(toDelete)
+  #figure <- toDelete
   
   
   
