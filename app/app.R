@@ -23,7 +23,7 @@ library(vroom)
 
 ui <- htmltools::htmlTemplate(
   
-  "azmet-shiny-template.html",
+  filename = "azmet-shiny-template.html",
   
   pageFluid = bslib::page_fluid(
     title = NULL,
@@ -34,7 +34,8 @@ ui <- htmltools::htmlTemplate(
       
       shiny::htmlOutput(outputId = "figureTitle"),
       shiny::htmlOutput(outputId = "figureSummary"),
-      shiny::plotOutput(outputId = "figure"),
+      #shiny::plotOutput(outputId = "figure"),
+      #plotly::plotlyOutput(outputId = "figure"),
       shiny::htmlOutput(outputId = "figureFooter")
     ) |>
       htmltools::tagAppendAttributes(
@@ -90,14 +91,11 @@ server <- function(input, output, session) {
     )
   })
   
-  figure <- shiny::eventReactive(dataMerge(), {
-    fxn_figure(
-      azmetStation = input$azmetStation,
-      inData = dataMerge(), 
-      startDate = input$plantingDate, 
-      endDate = input$endDate
-    )
-  })
+  #figure <- shiny::eventReactive(dataMerge(), {
+  #  fxn_figure(
+  #    inData = dataMerge()
+  #  )
+  #})
   
   figureFooter <- shiny::eventReactive(dataMerge(), {
     fxn_figureFooter(
@@ -131,9 +129,12 @@ server <- function(input, output, session) {
   
   # Outputs -----
   
-  output$figure <- shiny::renderPlot({
-    figure()
-  }, res = 96)
+  #output$figure <- shiny::renderPlot({
+  #  figure()
+  #}, res = 96)
+  #output$figure <- plotly::renderPlotly({
+  #  figure()
+  #})
   
   output$pageSupportText <- shiny::renderUI({
     pageSupportText()

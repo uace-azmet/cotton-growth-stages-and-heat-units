@@ -1,9 +1,6 @@
 #' `fxn_figure` generates bar chart of cumulative heat units of current and recent years with cotton growth stage labels
 #' 
-#' @param azmetStation - AZMet station selection by user
 #' @param inData - data table of seasonal heat accumulation values by year
-#' @param startDate - Planting date of period of interest
-#' @param endDate - End date of period of interest
 #' @return `figure` - png of figure
 
 # https://plotly-r.com/ 
@@ -13,7 +10,7 @@
 # https://www.color-hex.com/color-palette/1041718
 
 
-fxn_figure <- function(azmetStation, inData, startDate, endDate) {
+fxn_figure <- function(inData) {
   inData <- inData %>% 
     dplyr::mutate(dateYear = as.factor(dateYear))
   
@@ -29,12 +26,172 @@ fxn_figure <- function(azmetStation, inData, startDate, endDate) {
   
   
   
+  figure <- 
+    plotly::plot_ly() %>% 
+    
+    plotly::add_trace( # Bars for `dataOtherYears`
+      data = dataOtherYears,
+      x = ~dateYear,
+      y = ~heatSum,
+      type = "bar",
+      marker = list(color = "#989898"),
+      showlegend = FALSE,
+      text = ~heatSum,
+      textposition = "auto",
+      name = "yaxis1",
+      yaxis = "y1"
+    ) %>% 
+    
+    plotly::add_trace( # Bar for `dataCurrentYear`
+      inherit = FALSE,
+      data = dataCurrentYear,
+      x = ~dateYear,
+      y = ~heatSum,
+      type = "bar",
+      marker = list(color = "#191919"),
+      showlegend = FALSE,
+      text = ~heatSum,
+      textposition = "auto",
+      name = "yaxis2",
+      yaxis = "y2"
+    ) %>%
+    
+    plotly::config(
+      displaylogo = FALSE,
+      displayModeBar = TRUE,
+      modeBarButtonsToRemove = c(
+        "autoScale2d",
+        "hoverClosestCartesian", 
+        "hoverCompareCartesian", 
+        "lasso2d",
+        "select"
+      ),
+      scrollZoom = FALSE,
+      toImageButtonOptions = list(
+        format = "png", # Either png, svg, jpeg, or webp
+        filename = "AZMet-data-viewer-15minute-station-level-summaries",
+        height = 400,
+        width = 700,
+        scale = 5
+      )
+    ) %>%
+    
+    plotly::layout(
+      font = list(
+        color = "#191919",
+        family = "proxima-nova, calibri, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        size = 13
+      ),
+      margin = list(
+        l = 0,
+        r = 150, # For space between plot and modebar
+        b = 80, # For space between x-axis title and caption or figure help text
+        t = 0,
+        pad = 3 # For space between gridlines and yaxis labels
+      ),
+      modebar = list(
+        bgcolor = "#FFFFFF",
+        orientation = "v"
+      ),
+      shapes = 
+        list(
+          list(
+            type = "rect",
+            fillcolor = "#c9c9c9",
+            line = list(width = 0),
+            layer = "below",
+            opacity = 0.5,
+            x0 = 0,
+            x1 = 1,
+            xref = "paper",
+            y0 = 1800, # Peak Bloom (Short)
+            y1 = 2200, # Peak Bloom (Long)
+            yref = "y"
+          ),
+          list(
+            type = "rect",
+            fillcolor = "#c9c9c9",
+            line = list(width = 0),
+            layer = "below",
+            opacity = 0.5,
+            x0 = 0,
+            x1 = 1,
+            xref = "paper",
+            y0 = 2400, # Cutout (Short)
+            y1 = 2800, # Cutout (Long)
+            yref = "y"
+          ),
+          list(
+            type = "rect",
+            fillcolor = "#c9c9c9",
+            line = list(width = 0),
+            layer = "below",
+            opacity = 0.5,
+            x0 = 0,
+            x1 = 1,
+            xref = "paper",
+            y0 = 3000, # Terminate (Short)
+            y1 = 3400, # Terminate (Long)
+            yref = "y"
+          )
+        ),
+      xaxis = list(
+        linewidth = 0,
+        title = list(
+          font = list(size = 14),
+          standoff = 25,
+          text = "Year"
+        ),
+        zeroline = FALSE
+      ),
+      yaxis = list(
+        gridcolor = "#c9c9c9",
+        ticktext = list("0", "700", "1200", "1500", "1800", "2200", "2400", "2800", "3000", "3400"),
+        tickvals = list(0, 700, 1200, 1500, 1800, 2200, 2400, 2800, 3000, 3400),
+        title = list(
+          font = list(size = 14),
+          standoff = 25,
+          text = "Degree Days Fahrenheit"
+        ),
+        zeroline = TRUE,
+        zerolinecolor = "#c9c9c9"
+      ),
+      yaxis2 = list(
+        gridcolor = "#c9c9c9",
+        matches = "y",
+        ticktext = list(
+          "Planting", 
+          "Pinhead Square", 
+          "First Flower", 
+          "One-inch Boll", 
+          "Peak Bloom (Short)", 
+          "Peak Bloom (Long)", 
+          "Cutout (Short)", 
+          "Cutout (Long)", 
+          "Terminate (Short)", 
+          "Terminate (Long)"
+        ),
+        tickvals = list(0, 700, 1200, 1500, 1800, 2200, 2400, 2800, 3000, 3400),
+        overlaying = "y",
+        side = "right",
+        zeroline = TRUE,
+        zerolinecolor = "#c9c9c9"
+      )
+    ) %>% 
+    
+    plotly::style(
+      hoverinfo = "none"
+    )
+  
+  figure
+  
   
   
   
   
   toDelete <- ggplot2::ggplot(
-    data = inData, 
+    #data = inData, 
+    data = dataMerge, 
     mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum)
   ) +
     
@@ -50,28 +207,28 @@ fxn_figure <- function(azmetStation, inData, startDate, endDate) {
     ) +
     
     geom_col( # Previous growing season
-      data = dplyr::filter(inData, inData$dateYear < max(inData$dateYear)), 
+      data = dataOtherYears, 
       mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum), 
       alpha = 1.0, fill = "#989898"
     ) +
     
     geom_col( # Current growing season
-      data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
+      data = dataCurrentYear, 
       mapping = aes(x = as.factor(.data$dateYear), y = .data$heatSum), 
       alpha = 1.0, fill = "#191919"
     ) +
     
-    geom_label( # Previous growing season
-      data = dplyr::filter(inData, inData$dateYear < max(inData$dateYear)), 
-      mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
-      color = "#989898", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
-    ) +
+    #geom_label( # Previous growing season
+    #  data = dplyr::filter(inData, inData$dateYear < max(inData$dateYear)), 
+    #  mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
+    #  color = "#989898", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
+    #) +
     
-    geom_label( # Current growing season
-      data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
-      mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
-      color = "#191919", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
-    ) + 
+    #geom_label( # Current growing season
+    #  data = dplyr::filter(inData, inData$dateYear == max(inData$dateYear)), 
+    #  mapping = aes(label = .data$heatSumLabel, fontface = "bold"), 
+    #  color = "#191919", fill = "#FFFFFF", label.size = NA, size = 3.5, vjust = -0.1
+    #) + 
     
     labs(x = "\nYear", y = "Degree Days Fahrenheit\n") +
     
@@ -186,6 +343,11 @@ fxn_figure <- function(azmetStation, inData, startDate, endDate) {
       #complete = FALSE,
       #validate = TRUE
     )
+  #toDelete
+  
+  #plotly::ggplotly(toDelete)
+  
+  
   
   return(figure)
 }
