@@ -6,9 +6,9 @@ library(azmetr)
 library(bsicons)
 library(bslib)
 library(dplyr)
-library(ggplot2)
 library(htmltools)
 library(lubridate)
+library(plotly)
 library(shiny)
 library(vroom)
 
@@ -23,7 +23,7 @@ library(vroom)
 
 ui <- htmltools::htmlTemplate(
   
-  "azmet-shiny-template.html",
+  filename = "azmet-shiny-template.html",
   
   pageFluid = bslib::page_fluid(
     title = NULL,
@@ -34,7 +34,9 @@ ui <- htmltools::htmlTemplate(
       
       shiny::htmlOutput(outputId = "figureTitle"),
       shiny::htmlOutput(outputId = "figureSummary"),
-      shiny::plotOutput(outputId = "figure"),
+      shiny::htmlOutput(outputId = "figureHelpText"),
+      #shiny::plotOutput(outputId = "figure"),
+      plotly::plotlyOutput(outputId = "figure"),
       shiny::htmlOutput(outputId = "figureFooter")
     ) |>
       htmltools::tagAppendAttributes(
@@ -50,7 +52,6 @@ ui <- htmltools::htmlTemplate(
 # Server --------------------
 
 server <- function(input, output, session) {
-  
   
   # Observables -----
   
@@ -80,9 +81,12 @@ server <- function(input, output, session) {
       type = "message"
     )
     
-    on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
+    on.exit(
+      removeNotification(id = idCalculatingHeatUnits), 
+      add = TRUE
+    )
     
-    # Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
+    #Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
     fxn_dataMerge(
       azmetStation = input$azmetStation, 
       startDate = input$plantingDate, 
@@ -92,10 +96,8 @@ server <- function(input, output, session) {
   
   figure <- shiny::eventReactive(dataMerge(), {
     fxn_figure(
-      azmetStation = input$azmetStation,
-      inData = dataMerge(), 
-      startDate = input$plantingDate, 
-      endDate = input$endDate
+      inData = dataMerge(),
+      azmetStation = input$azmetStation
     )
   })
   
@@ -107,12 +109,17 @@ server <- function(input, output, session) {
     )
   })
   
+  figureHelpText <- shiny::eventReactive(dataMerge(), {
+    fxn_figureHelpText()
+  })
+  
   figureSummary <- shiny::eventReactive(dataMerge(), {
     fxn_figureSummary(
       azmetStation = input$azmetStation, 
       inData = dataMerge(),
       startDate = input$plantingDate, 
-      endDate = input$endDate)
+      endDate = input$endDate
+    )
   })
   
   figureTitle <- shiny::eventReactive(dataMerge(), {
@@ -131,9 +138,9 @@ server <- function(input, output, session) {
   
   # Outputs -----
   
-  output$figure <- shiny::renderPlot({
+  output$figure <- plotly::renderPlotly({
     figure()
-  }, res = 96)
+  })
   
   output$pageSupportText <- shiny::renderUI({
     pageSupportText()
@@ -141,6 +148,10 @@ server <- function(input, output, session) {
   
   output$figureFooter <- shiny::renderUI({
     figureFooter()
+  })
+  
+  output$figureHelpText <- shiny::renderUI({
+    figureHelpText()
   })
   
   output$figureSummary <- shiny::renderUI({

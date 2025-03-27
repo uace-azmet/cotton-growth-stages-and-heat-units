@@ -32,7 +32,7 @@ sidebar <- bslib::sidebar(
     inputId = "plantingDate",
     label = "Planting Date",
     value = initialPlantingDate,
-    min = initialPlantingDate - 31, # January 1 of current growing season
+    min = "2024-01-01", # January 1 of current growing season,
     max = Sys.Date() - 1,
     format = "MM d, yyyy",
     startview = "month",
@@ -45,7 +45,7 @@ sidebar <- bslib::sidebar(
     inputId = "endDate",
     label = "End Date",
     value = initialEndDate,
-    min = initialPlantingDate - 31, # January 1 of current growing season,
+    min = "2024-01-01", # January 1 of current growing season,
     max = initialEndDate,
     format = "MM d, yyyy",
     startview = "month",
