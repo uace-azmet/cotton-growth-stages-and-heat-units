@@ -7,7 +7,7 @@ fxn_figureHelpText <- function() {
   figureHelpText <- 
     htmltools::p(
       htmltools::HTML(
-        "Hover over bars for values of cumulative heat units. Select from the icons to the right of the graph for additional functionality."
+        "Hover over bars for values of cumulative heat units."
       ), 
       
       class = "figure-help-text"
