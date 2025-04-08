@@ -68,7 +68,7 @@ fxn_figure <- function(inData, azmetStation) {
     
     plotly::config(
       displaylogo = FALSE,
-      displayModeBar = TRUE,
+      displayModeBar = FALSE,
       modeBarButtonsToRemove = c(
         "autoScale2d",
         "hoverClosestCartesian", 
