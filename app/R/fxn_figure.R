@@ -164,6 +164,7 @@ fxn_figure <- function(inData, azmetStation) {
           )
         ),
       xaxis = list(
+        fixedrange = TRUE,
         linewidth = 0,
         title = list(
           font = list(size = 14),
@@ -173,6 +174,7 @@ fxn_figure <- function(inData, azmetStation) {
         zeroline = FALSE
       ),
       yaxis = list(
+        fixedrange = TRUE,
         gridcolor = "#c9c9c9",
         ticktext = list("0", "700", "1200", "1500", "1800", "2200", "2400", "2800", "3000", "3400"),
         tickvals = list(0, 700, 1200, 1500, 1800, 2200, 2400, 2800, 3000, 3400),
@@ -185,6 +187,7 @@ fxn_figure <- function(inData, azmetStation) {
         zerolinecolor = "#c9c9c9"
       ),
       yaxis2 = list(
+        fixedrange = TRUE,
         gridcolor = "#c9c9c9",
         matches = "y",
         ticktext = list(
