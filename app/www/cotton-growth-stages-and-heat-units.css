@@ -157,6 +157,11 @@
   font-weight: normal;
 }
 
+/* https://github.com/plotly/plotly.js/issues/2342 */
+.hovertext {
+  fill-opacity: 0.85;
+}
+
 .main.bslib-gap-spacing.html-fill-container {
   padding-bottom: 24px;
   padding-left: 24px;

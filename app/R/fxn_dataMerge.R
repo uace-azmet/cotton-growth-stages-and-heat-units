@@ -24,11 +24,56 @@ fxn_dataMerge <- function(azmetStation, startDate, endDate) {
       endDate = endDate
     )
     
+    if (azmetStation == "Mohave ETo") {
+      nodataDateRange <- 
+        lubridate::interval(
+          start = apiStartDate, 
+          end = lubridate::date("2023-07-19")
+        )
+      
+      userDateRange <- lubridate::interval(start = startDate, end = endDate)
+      
+      if (lubridate::int_overlaps(int1 = nodataDateRange, int2 = userDateRange) == TRUE) {
+        dataHeatSum$heatSum <- 0.00
+        dataHeatSum$heatSumLabel <- "NA" 
+      }
+    }
+    
+    if (azmetStation == "Wellton ETo") {
+      nodataDateRange <- 
+        lubridate::interval(
+          start = apiStartDate, 
+          end = lubridate::date("2023-05-01")
+        )
+      
+      userDateRange <- lubridate::interval(start = startDate, end = endDate)
+      
+      if (lubridate::int_overlaps(int1 = nodataDateRange, int2 = userDateRange) == TRUE) {
+        dataHeatSum$heatSum <- 0.00
+        dataHeatSum$heatSumLabel <- "NA" 
+      }
+    }
+    
     if (azmetStation == "Yuma North Gila") {
       nodataDateRange <- 
         lubridate::interval(
           start = lubridate::date("2021-06-16"), 
           end = lubridate::date("2021-10-21")
+        )
+      
+      userDateRange <- lubridate::interval(start = startDate, end = endDate)
+      
+      if (lubridate::int_overlaps(int1 = nodataDateRange, int2 = userDateRange) == TRUE) {
+        dataHeatSum$heatSum <- 0.00
+        dataHeatSum$heatSumLabel <- "NA" 
+      }
+    }
+    
+    if (azmetStation == "Yuma Valley ETo") {
+      nodataDateRange <- 
+        lubridate::interval(
+          start = apiStartDate, 
+          end = lubridate::date("2023-05-01")
         )
       
       userDateRange <- lubridate::interval(start = startDate, end = endDate)
