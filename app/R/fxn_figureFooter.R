@@ -38,7 +38,7 @@ fxn_figureFooter <- function(azmetStation, startDate, endDate) {
         htmltools::HTML(
           paste(
             standardText,
-            "A missing bar indicates an overlap of requested data and the period from June 16, 2021 through October 10, 2021, when the ", azmetStation, " station was not in operation.",
+            "A missing bar indicates data requested for the period from June 16, 2021 through October 10, 2021, when the ", azmetStation, " station was not in operation.",
             sep = " "
           )
         ),
@@ -51,7 +51,7 @@ fxn_figureFooter <- function(azmetStation, startDate, endDate) {
         htmltools::HTML(
           paste(
             standardText,
-            "Missing bars indicate an overlap of requested data and the period prior to July 20, 2023, when measurements begin at the ", azmetStation, " station.",
+            "Missing bars indicate data requested for the period prior to July 20, 2023, when measurements begin at the ", azmetStation, " station.",
             sep = " "
           )
         ),
@@ -64,7 +64,7 @@ fxn_figureFooter <- function(azmetStation, startDate, endDate) {
         htmltools::HTML(
           paste(
             standardText,
-            "Missing bars indicate an overlap of requested data and the period prior to May 2, 2023, when measurements begin at the ", azmetStation, " station.",
+            "Missing bars indicate data requested for the period prior to May 2, 2023, when measurements begin at the ", azmetStation, " station.",
             sep = " "
           )
         ),
@@ -77,7 +77,7 @@ fxn_figureFooter <- function(azmetStation, startDate, endDate) {
         htmltools::HTML(
           paste(
             standardText,
-            "Missing bars indicate an overlap of requested data and the period prior to May 2, 2023, when measurements begin at the ", azmetStation, " station.",
+            "Missing bars indicate data requested for the period prior to May 2, 2023, when measurements begin at the ", azmetStation, " station.",
             sep = " "
           )
         ),
