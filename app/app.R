@@ -28,7 +28,7 @@ ui <-
             class = "border-0 rounded-0 shadow-none"
           ),
         
-        shiny::htmlOutput(outputId = "pageSupportText")
+        shiny::htmlOutput(outputId = "pageBottomText")
       )
     ) # htmltools::htmlTemplate()
 
@@ -50,33 +50,33 @@ server <- function(input, output, session) {
   
   # Reactives -----
   
-  # dataMerge <- 
-  #   shiny::eventReactive(input$calculateHeatUnits, {
-  #     shiny::validate(
-  #       shiny::need(
-  #         expr = input$plantingDate <= input$endDate, 
-  #         message = FALSE
-  #       )
-  #     )
-  #   
-  #   idCalculatingHeatUnits <- 
-  #     shiny::showNotification(
-  #       ui = "Calculating heat units . . .", 
-  #       action = NULL, 
-  #       duration = NULL, 
-  #       closeButton = FALSE,
-  #       id = "idCalculatingHeatUnits",
-  #       type = "message"
-  #     )
-  #   
-  #   on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
-  #   
-  #   fxn_dataMerge( # Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
-  #     azmetStation = input$azmetStation, 
-  #     startDate = input$plantingDate, 
-  #     endDate = input$endDate
-  #   )
-  # })
+  dataMerge <-
+    shiny::eventReactive(input$calculateHeatUnits, {
+      shiny::validate(
+        shiny::need(
+          expr = input$startDate <= input$endDate,
+          message = FALSE
+        )
+      )
+
+    idCalculatingHeatUnits <-
+      shiny::showNotification(
+        ui = "Calculating heat units . . .",
+        action = NULL,
+        duration = NULL,
+        closeButton = FALSE,
+        id = "idCalculatingHeatUnits",
+        type = "message"
+      )
+
+    on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
+
+    fxn_dataMerge( # Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
+      azmetStation = input$azmetStation,
+      startDate = input$startDate,
+      endDate = input$endDate
+    )
+  })
   
   # figure <- 
   #   shiny::eventReactive(dataMerge(), {
@@ -114,16 +114,15 @@ server <- function(input, output, session) {
   #   shiny::eventReactive(dataMerge(), {
   #     fxn_figureTitle(azmetStation = input$azmetStation)
   #   })
-  # 
-  # pageSupportText <- 
-  #   shiny::eventReactive(dataMerge(), {
-  #     fxn_pageSupportText(
-  #       azmetStation = input$azmetStation,
-  #       startDate = input$plantingDate, 
-  #       endDate = input$endDate, 
-  #       timeStep = "Daily"
-  #     )
-  #   })
+
+  pageBottomText <-
+    shiny::eventReactive(dataMerge(), {
+      fxn_pageBottomText(
+        azmetStation = input$azmetStation,
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
   
   
   # Outputs -----
@@ -131,11 +130,6 @@ server <- function(input, output, session) {
   # output$figure <- 
   #   plotly::renderPlotly({
   #     figure()
-  #   })
-  # 
-  # output$pageSupportText <- 
-  #   shiny::renderUI({
-  #     pageSupportText()
   #   })
   # 
   # output$figureFooter <- 
@@ -157,6 +151,11 @@ server <- function(input, output, session) {
   #   shiny::renderUI({
   #     figureTitle()
   #   })
+  #   
+  output$pageBottomText <-
+    shiny::renderUI({
+      pageBottomText()
+    })
 }
 
 
