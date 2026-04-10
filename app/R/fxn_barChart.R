@@ -27,6 +27,8 @@ fxn_figure <- function(inData, azmetStation) {
   layoutFontFamily <- 
     "proxima-nova, calibri, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\""
   
+  ticktext <- inData$date_year_label
+  tickvals <- inData$end_date_year
   
   
   # Bar Chart -----
@@ -44,7 +46,7 @@ fxn_figure <- function(inData, azmetStation) {
         ~paste0(
           "<br><b>AZMet station:</b> ", azmetStation,
           "<br><b>Year:</b> ", date_year_label,
-          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal_label, digits = 1), nsmall = 1)
+          "<br><b>Cumulative Heat Units:</b> ", total_heat_units_seasonal_label, " DDF"
         ),
       type = "bar",
       yaxis = "y1"
@@ -63,7 +65,7 @@ fxn_figure <- function(inData, azmetStation) {
         ~paste0(
           "<br><b>AZMet station:</b> ", azmetStation,
           "<br><b>Year:</b> ", date_year_label,
-          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal_label, digits = 1), nsmall = 1)
+          "<br><b>Cumulative Heat Units:</b> ", total_heat_units_seasonal_label, " DDF"
         ),
       type = "bar",
       yaxis = "y2"
@@ -161,6 +163,8 @@ fxn_figure <- function(inData, azmetStation) {
         list(
           fixedrange = TRUE,
           linewidth = 0,
+          ticktext = ticktext,
+          tickvals = tickvals,
           title = list(font = list(size = 14), standoff = 25, text = "<b>Year</b>"),
           zeroline = FALSE
         ),
