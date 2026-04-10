@@ -50,7 +50,7 @@ server <- function(input, output, session) {
   
   # Reactives -----
   
-  dataMerge <-
+  totalHeatUnits <-
     shiny::eventReactive(input$calculateHeatUnits, {
       shiny::validate(
         shiny::need(
@@ -71,7 +71,7 @@ server <- function(input, output, session) {
 
     on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
 
-    fxn_dataMerge( # Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
+    fxn_totalHeatUnits( # Calls 'fxn_azDaily()' and 'fxn_dataHeatUnitsSeasonal()'
       azmetStation = input$azmetStation,
       startDate = input$startDate,
       endDate = input$endDate
@@ -79,15 +79,15 @@ server <- function(input, output, session) {
   })
   
   # figure <- 
-  #   shiny::eventReactive(dataMerge(), {
+  #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figure(
-  #       inData = dataMerge(),
+  #       inData = totalHeatUnits(),
   #       azmetStation = input$azmetStation
   #     )
   #   })
   # 
   # figureFooter <- 
-  #   shiny::eventReactive(dataMerge(), {
+  #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureFooter(
   #       azmetStation = input$azmetStation,
   #       startDate = input$plantingDate, 
@@ -96,27 +96,27 @@ server <- function(input, output, session) {
   #   })
   # 
   # figureHelpText <- 
-  #   shiny::eventReactive(dataMerge(), {
+  #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureHelpText()
   #   })
   # 
   # figureSummary <- 
-  #   shiny::eventReactive(dataMerge(), {
+  #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureSummary(
   #       azmetStation = input$azmetStation, 
-  #       inData = dataMerge(),
+  #       inData = totalHeatUnits(),
   #       startDate = input$plantingDate, 
   #       endDate = input$endDate
   #     )
   #   })
   # 
   # figureTitle <- 
-  #   shiny::eventReactive(dataMerge(), {
+  #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureTitle(azmetStation = input$azmetStation)
   #   })
 
   pageBottomText <-
-    shiny::eventReactive(dataMerge(), {
+    shiny::eventReactive(totalHeatUnits(), {
       fxn_pageBottomText(
         azmetStation = input$azmetStation,
         startDate = input$startDate,
