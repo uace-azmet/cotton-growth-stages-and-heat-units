@@ -22,7 +22,7 @@ fxn_barChartTitle <- function(azmetStation) {
           htmltools::HTML("&nbsp;"),
           bslib::tooltip(
             bsicons::bs_icon("info-circle"),
-            "Hover over bars for values of cumulative heat units. Click or tap on the 'Expand' button to the lower right of the chart to increase the viewing area.",
+            "Hover over bars for values of cumulative heat units.",
             id = "infoBarChartTitle",
             placement = "right"
           )

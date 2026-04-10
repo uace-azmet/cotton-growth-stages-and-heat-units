@@ -19,7 +19,7 @@ ui <-
           
           shiny::htmlOutput(outputId = "barChartTitle"),
           shiny::htmlOutput(outputId = "barChartSummary"),
-          # plotly::plotlyOutput(outputId = "barChart"),
+          plotly::plotlyOutput(outputId = "barChart"),
           # shiny::htmlOutput(outputId = "barChartCaption")
         ) |>
           htmltools::tagAppendAttributes(
@@ -77,14 +77,14 @@ server <- function(input, output, session) {
     )
   })
   
-  # figure <- 
-  #   shiny::eventReactive(totalHeatUnits(), {
-  #     fxn_figure(
-  #       inData = totalHeatUnits(),
-  #       azmetStation = input$azmetStation
-  #     )
-  #   })
-  # 
+  barChart <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_figure(
+        inData = totalHeatUnits()[[2]],
+        azmetStation = input$azmetStation
+      )
+    })
+
   # figureFooter <- 
   #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureFooter(
@@ -126,12 +126,12 @@ server <- function(input, output, session) {
   
   # Outputs -----
   
-  # output$barChart <- 
-  #   plotly::renderPlotly({
-  #     barChart()
-  #   })
-  # 
-  # output$barChartCaption <- 
+  output$barChart <-
+    plotly::renderPlotly({
+      barChart()
+    })
+
+  # output$barChartCaption <-
   #   shiny::renderUI({
   #     barChartCaption()
   #   })
