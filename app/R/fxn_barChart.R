@@ -34,7 +34,7 @@ fxn_figure <- function(inData, azmetStation) {
   barChart <- 
     plotly::plot_ly( # Bars for `dataOtherYears`
       data = dataOtherYears,
-      x = ~date_year_label,
+      x = ~end_date_year,
       y = ~total_heat_units_seasonal,
       marker = list(color = "#bfbfbf"),
       name = "other years",
@@ -44,7 +44,7 @@ fxn_figure <- function(inData, azmetStation) {
         ~paste0(
           "<br><b>AZMet station:</b> ", azmetStation,
           "<br><b>Year:</b> ", date_year_label,
-          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal, digits = 1), nsmall = 1)
+          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal_label, digits = 1), nsmall = 1)
         ),
       type = "bar",
       yaxis = "y1"
@@ -53,7 +53,7 @@ fxn_figure <- function(inData, azmetStation) {
     plotly::add_trace( # Bar for `dataCurrentYear`
       inherit = FALSE,
       data = dataCurrentYear,
-      x = ~date_year_label,
+      x = ~end_date_year,
       y = ~total_heat_units_seasonal,
       marker = list(color = "#191919"),
       name = "current year",
@@ -63,7 +63,7 @@ fxn_figure <- function(inData, azmetStation) {
         ~paste0(
           "<br><b>AZMet station:</b> ", azmetStation,
           "<br><b>Year:</b> ", date_year_label,
-          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal, digits = 1), nsmall = 1)
+          "<br><b>DDF:</b> ", format(round(total_heat_units_seasonal_label, digits = 1), nsmall = 1)
         ),
       type = "bar",
       yaxis = "y2"

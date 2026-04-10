@@ -20,7 +20,7 @@ ui <-
           shiny::htmlOutput(outputId = "barChartTitle"),
           shiny::htmlOutput(outputId = "barChartSummary"),
           plotly::plotlyOutput(outputId = "barChart"),
-          # shiny::htmlOutput(outputId = "barChartCaption")
+          shiny::htmlOutput(outputId = "barChartCaption")
         ) |>
           htmltools::tagAppendAttributes(
             #https://getbootstrap.com/docs/5.0/utilities/api/
@@ -40,9 +40,58 @@ server <- function(input, output, session) {
   
   # Observables -----
   
+  # To update available dates based on selected station
+  shiny::observeEvent(input$azmetStation, {
+    stationStartDate <-
+      dplyr::filter(azmetStationMetadata, meta_station_name == input$azmetStation) %>% 
+      dplyr::pull(start_date)
+    
+    stationStartDateMinimum <- stationStartDate
+    stationEndDateMinimum <- stationStartDate
+    
+    if (stationStartDate > input$startDate) {
+      stationStartDateSelected <- stationStartDate
+    } else {
+      stationStartDateSelected <- input$startDate
+    }
+    
+    if (stationStartDate > input$endDate) {
+      stationEndDateSelected <- stationStartDate
+    } else {
+      stationEndDateSelected <- input$endDate
+    }
+    
+    shiny::updateDateInput(
+      inputId = "startDate",
+      label = "Start Date",
+      value = stationStartDateSelected,
+      min = stationStartDateMinimum,
+      max = Sys.Date() - 1
+    )
+    
+    shiny::updateDateInput(
+      inputId = "endDate",
+      label = "End Date",
+      value = stationEndDateSelected,
+      min = stationEndDateMinimum,
+      max = Sys.Date() - 1
+    )
+  })
+  
+  # Catch input errors before data download, show error modal
   shiny::observeEvent(input$calculateHeatUnits, {
     if (input$startDate > input$endDate) {
       shiny::showModal(datepickerErrorModal) # `scr##_datepickerErrorModal.R`
+    }
+    
+    if (
+      input$azmetStation == "Yuma N.Gila" & 
+      lubridate::int_overlaps(
+        int1 = yugNodataInterval, 
+        int2 = lubridate::interval(input$startDate, input$endDate)
+      ) == TRUE
+    ) {
+      shiny::showModal(datepickerYumaNGilaErrorModal) # `scr##_datepickerYumaNGilaErrorModal.R`
     }
   })
   
@@ -54,7 +103,17 @@ server <- function(input, output, session) {
       shiny::validate(
         shiny::need(
           expr = input$startDate <= input$endDate,
-          message = FALSE
+          message = FALSE # Failing validation test
+        ),
+        shiny::need(
+          expr = 
+            !(input$azmetStation == "Yuma N.Gila" &
+                lubridate::int_overlaps(
+                  int1 = yugNodataInterval, 
+                  int2 = lubridate::interval(input$startDate, input$endDate)
+                )
+            ),
+          message = FALSE # Failing validation test
         )
       )
 
@@ -85,20 +144,16 @@ server <- function(input, output, session) {
       )
     })
 
-  # figureFooter <- 
-  #   shiny::eventReactive(totalHeatUnits(), {
-  #     fxn_figureFooter(
-  #       azmetStation = input$azmetStation,
-  #       startDate = input$startDate, 
-  #       endDate = input$endDate
-  #     )
-  #   })
-  # 
-  # figureHelpText <- 
-  #   shiny::eventReactive(totalHeatUnits(), {
-  #     fxn_figureHelpText()
-  #   })
-  # 
+  barChartCaption <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartCaption(
+        azmetStation = input$azmetStation,
+        inData = totalHeatUnits()[[2]],
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
+
   barChartSummary <-
     shiny::eventReactive(totalHeatUnits(), {
       fxn_barChartSummary(
@@ -131,11 +186,11 @@ server <- function(input, output, session) {
       barChart()
     })
 
-  # output$barChartCaption <-
-  #   shiny::renderUI({
-  #     barChartCaption()
-  #   })
-  # 
+  output$barChartCaption <-
+    shiny::renderUI({
+      barChartCaption()
+    })
+
   output$barChartSummary <-
     shiny::renderUI({
       barChartSummary()

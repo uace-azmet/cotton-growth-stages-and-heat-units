@@ -14,6 +14,13 @@
     content: attr(data-title);
 }
 
+.bar-chart-caption {
+  color: #606060; 
+  font-size: 0.85rem;
+  font-style: normal;
+  padding-top: 8px;
+}
+
 .bar-chart-summary {
   color: #191919;
   font-weight: plain;
