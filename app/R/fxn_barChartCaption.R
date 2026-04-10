@@ -16,12 +16,12 @@ fxn_barChartCaption <- function(azmetStation, inData, startDate, endDate) {
   if (nrow(inData) == 1) {
     standardText <- 
       paste0(
-        "Heat unit accumulation (black bar in graph) is based on the sum of daily totals during the period of interest and as estimated by the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively. Data for the ", azmetStation, " station in the new AZMet database currently go back to ", gsub(" 0", " ", format(azmetStationStartDate, "%B %d, %Y")), "."
+        "Heat unit accumulation (black bar in chart) is based on the sum of daily totals during the period of interest and as estimated by the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively. Data for the ", azmetStation, " station in the new AZMet database currently go back to ", gsub(" 0", " ", format(azmetStationStartDate, "%B %d, %Y")), "."
       )
   } else {
     standardText <- 
       paste0(
-        "Heat unit accumulation for the current year (black bar in graph) is based on the sum of daily totals during the period of interest and as estimated by the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively. Totals for past years (gray bars in graph) are based on the same start and end month and day, but during those respective years. Data for the ", azmetStation, " station in the new AZMet database currently go back to ", gsub(" 0", " ", format(azmetStationStartDate, "%B %d, %Y")), "."
+        "Heat unit accumulation for the current year (black bar in chart) is based on the sum of daily totals during the period of interest and as estimated by the single sine curve method with upper and lower temperature thresholds of 86 and 55 °F, respectively. Totals for past years (gray bars in chart) are based on the same start and end month and day, but during those respective years. Data for the ", azmetStation, " station in the new AZMet database currently go back to ", gsub(" 0", " ", format(azmetStationStartDate, "%B %d, %Y")), "."
       )
   }
   
@@ -48,7 +48,7 @@ fxn_barChartCaption <- function(azmetStation, inData, startDate, endDate) {
         htmltools::HTML(
           paste(
             standardText,
-            "However, we do not show total evapotranspiration for the year with a month-day period that overlaps the period from June 16, 2021 through October 21, 2021, when the ", azmetStation, " station was not in operation.",
+            "However, we do not show cumulative heat units for the year with a month-day period that overlaps the period from June 16, 2021 through October 21, 2021, when the ", azmetStation, " station was not in operation.",
             sep = " "
           )
         ),

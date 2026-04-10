@@ -63,7 +63,7 @@ server <- function(input, output, session) {
     
     shiny::updateDateInput(
       inputId = "startDate",
-      label = "Start Date",
+      label = "Planting Date",
       value = stationStartDateSelected,
       min = stationStartDateMinimum,
       max = Sys.Date() - 1

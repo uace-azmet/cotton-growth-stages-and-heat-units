@@ -34,7 +34,7 @@ fxn_pageBottomText <- function(azmetStation, startDate, endDate) {
   
   heatUnitsWebpageURL <- 
     a(
-      "heat units-related information",
+      "heat unit",
       href="https://azmet.arizona.edu/application-areas/heat-units",
       target="_blank"
     )
@@ -85,7 +85,7 @@ fxn_pageBottomText <- function(azmetStation, startDate, endDate) {
     htmltools::p(
       htmltools::HTML(
         paste0(
-          "Tables of daily totals of heat units for individual stations and the current calendar year are available from the AZMet webpage with ", heatUnitsWebpageURL, ". More information on single sine curve method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin ", bulletinURL, ".",  
+          "Tables of daily totals of heat units for individual stations and the current calendar year are available from the AZMet webpage with ", heatUnitsWebpageURL, "resources. More information on single sine curve method, as well as the relationship between heat units and cotton growth stages, is in Extension bulletin ", bulletinURL, ".",  
           br(), br(), 
           "Daily AZMet data are from ", apiURL, " and accessed using the ", azmetrURL, " R package. Values from recent dates may be based on provisional data. More information about ", webpageDataVariables, ", ", webpageNetworkMap, ", and ", webpageStationMetadata, " is available on the ", webpageAZMet, ". Users of AZMet data and related information assume all risks of its use.",
           br(), br(),
