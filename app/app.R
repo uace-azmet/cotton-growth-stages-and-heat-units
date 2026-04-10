@@ -1,168 +1,214 @@
 # Use cumulative heat units to estimate cotton growth stages by station and date range
 
 
-# Libraries
-library(azmetr)
-library(bsicons)
-library(bslib)
-library(dplyr)
-library(htmltools)
-library(lubridate)
-library(plotly)
-library(shiny)
-library(vroom)
-
-# Functions. Loaded automatically at app start if in `R` folder
-#source("./R/fxnABC.R", local = TRUE)
-
-# Scripts. Loaded automatically at app start if in `R` folder
-#source("./R/scr##DEF.R", local = TRUE)
-
-
 # UI --------------------
 
-ui <- htmltools::htmlTemplate(
-  
-  filename = "azmet-shiny-template.html",
-  
-  pageFluid = bslib::page_fluid(
-    title = NULL,
-    theme = theme, # `scr##_theme.R`
+
+ui <- 
+  htmltools::htmlTemplate(
     
-    bslib::layout_sidebar(
-      sidebar = sidebar, # `scr##_sidebar.R`
-      
-      shiny::htmlOutput(outputId = "figureTitle"),
-      shiny::htmlOutput(outputId = "figureSummary"),
-      shiny::htmlOutput(outputId = "figureHelpText"),
-      #shiny::plotOutput(outputId = "figure"),
-      plotly::plotlyOutput(outputId = "figure"),
-      shiny::htmlOutput(outputId = "figureFooter")
-    ) |>
-      htmltools::tagAppendAttributes(
-        #https://getbootstrap.com/docs/5.0/utilities/api/
-        class = "border-0 rounded-0 shadow-none"
-      ),
+    filename = "azmet-shiny-template.html",
     
-    shiny::htmlOutput(outputId = "pageSupportText")
-  )
-) # htmltools::htmlTemplate()
+    pageFluid = 
+      bslib::page_fluid(
+        title = NULL,
+        theme = theme, # `scr##_theme.R`
+        
+        bslib::layout_sidebar(
+          sidebar = sidebar, # `scr##_sidebar.R`
+          
+          shiny::htmlOutput(outputId = "barChartTitle"),
+          shiny::htmlOutput(outputId = "barChartSummary"),
+          plotly::plotlyOutput(outputId = "barChart"),
+          shiny::htmlOutput(outputId = "barChartCaption")
+        ) |>
+          htmltools::tagAppendAttributes(
+            #https://getbootstrap.com/docs/5.0/utilities/api/
+            class = "border-0 rounded-0 shadow-none"
+          ),
+        
+        shiny::htmlOutput(outputId = "pageBottomText")
+      )
+    ) # htmltools::htmlTemplate()
 
 
 # Server --------------------
 
+
 server <- function(input, output, session) {
+  
   
   # Observables -----
   
+  # To update available dates based on selected station
+  shiny::observeEvent(input$azmetStation, {
+    stationStartDate <-
+      dplyr::filter(azmetStationMetadata, meta_station_name == input$azmetStation) %>% 
+      dplyr::pull(start_date)
+    
+    stationStartDateMinimum <- stationStartDate
+    stationEndDateMinimum <- stationStartDate
+    
+    if (stationStartDate > input$startDate) {
+      stationStartDateSelected <- stationStartDate
+    } else {
+      stationStartDateSelected <- input$startDate
+    }
+    
+    if (stationStartDate > input$endDate) {
+      stationEndDateSelected <- stationStartDate
+    } else {
+      stationEndDateSelected <- input$endDate
+    }
+    
+    shiny::updateDateInput(
+      inputId = "startDate",
+      label = "Planting Date",
+      value = stationStartDateSelected,
+      min = stationStartDateMinimum,
+      max = Sys.Date() - 1
+    )
+    
+    shiny::updateDateInput(
+      inputId = "endDate",
+      label = "End Date",
+      value = stationEndDateSelected,
+      min = stationEndDateMinimum,
+      max = Sys.Date() - 1
+    )
+  })
+  
+  # Catch input errors before data download, show error modal
   shiny::observeEvent(input$calculateHeatUnits, {
-    if (input$plantingDate > input$endDate) {
+    if (input$startDate > input$endDate) {
       shiny::showModal(datepickerErrorModal) # `scr##_datepickerErrorModal.R`
+    }
+    
+    if (
+      input$azmetStation == "Yuma N.Gila" & 
+      lubridate::int_overlaps(
+        int1 = yugNodataInterval, 
+        int2 = lubridate::interval(input$startDate, input$endDate)
+      ) == TRUE
+    ) {
+      shiny::showModal(datepickerYumaNGilaErrorModal) # `scr##_datepickerYumaNGilaErrorModal.R`
     }
   })
   
   
   # Reactives -----
   
-  dataMerge <- shiny::eventReactive(input$calculateHeatUnits, {
-    shiny::validate(
-      shiny::need(
-        expr = input$plantingDate <= input$endDate, 
-        message = FALSE
+  totalHeatUnits <-
+    shiny::eventReactive(input$calculateHeatUnits, {
+      shiny::validate(
+        shiny::need(
+          expr = input$startDate <= input$endDate,
+          message = FALSE # Failing validation test
+        ),
+        shiny::need(
+          expr = 
+            !(input$azmetStation == "Yuma N.Gila" &
+                lubridate::int_overlaps(
+                  int1 = yugNodataInterval, 
+                  int2 = lubridate::interval(input$startDate, input$endDate)
+                )
+            ),
+          message = FALSE # Failing validation test
+        )
       )
-    )
-    
-    idCalculatingHeatUnits <- shiny::showNotification(
-      ui = "Calculating heat units . . .", 
-      action = NULL, 
-      duration = NULL, 
-      closeButton = FALSE,
-      id = "idCalculatingHeatUnits",
-      type = "message"
-    )
-    
-    on.exit(
-      removeNotification(id = idCalculatingHeatUnits), 
-      add = TRUE
-    )
-    
-    #Calls 'fxn_dataELT()' and 'fxn_dataHeatSum()'
-    fxn_dataMerge(
-      azmetStation = input$azmetStation, 
-      startDate = input$plantingDate, 
-      endDate = input$endDate
-    )
-  })
-  
-  figure <- shiny::eventReactive(dataMerge(), {
-    fxn_figure(
-      inData = dataMerge(),
-      azmetStation = input$azmetStation
-    )
-  })
-  
-  figureFooter <- shiny::eventReactive(dataMerge(), {
-    fxn_figureFooter(
+
+    idCalculatingHeatUnits <-
+      shiny::showNotification(
+        ui = "Calculating heat units . . .",
+        action = NULL,
+        duration = NULL,
+        closeButton = FALSE,
+        id = "idCalculatingHeatUnits",
+        type = "message"
+      )
+
+    on.exit(removeNotification(id = idCalculatingHeatUnits), add = TRUE)
+
+    fxn_totalHeatUnits( # Calls 'fxn_azDaily()' and 'fxn_dataHeatUnitsSeasonal()'
       azmetStation = input$azmetStation,
-      startDate = input$plantingDate, 
+      startDate = input$startDate,
       endDate = input$endDate
     )
   })
   
-  figureHelpText <- shiny::eventReactive(dataMerge(), {
-    fxn_figureHelpText()
-  })
-  
-  figureSummary <- shiny::eventReactive(dataMerge(), {
-    fxn_figureSummary(
-      azmetStation = input$azmetStation, 
-      inData = dataMerge(),
-      startDate = input$plantingDate, 
-      endDate = input$endDate
-    )
-  })
-  
-  figureTitle <- shiny::eventReactive(dataMerge(), {
-    fxn_figureTitle(azmetStation = input$azmetStation)
-  })
-  
-  pageSupportText <- shiny::eventReactive(dataMerge(), {
-    fxn_pageSupportText(
-      azmetStation = input$azmetStation,
-      startDate = input$plantingDate, 
-      endDate = input$endDate, 
-      timeStep = "Daily"
-    )
-  })
+  barChart <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_figure(
+        inData = totalHeatUnits()[[2]],
+        azmetStation = input$azmetStation
+      )
+    })
+
+  barChartCaption <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartCaption(
+        azmetStation = input$azmetStation,
+        inData = totalHeatUnits()[[2]],
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
+
+  barChartSummary <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartSummary(
+        azmetStation = input$azmetStation,
+        inData = totalHeatUnits()[[2]],
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
+
+  barChartTitle <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartTitle(azmetStation = input$azmetStation)
+    })
+
+  pageBottomText <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_pageBottomText(
+        azmetStation = input$azmetStation,
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
   
   
   # Outputs -----
   
-  output$figure <- plotly::renderPlotly({
-    figure()
-  })
-  
-  output$pageSupportText <- shiny::renderUI({
-    pageSupportText()
-  })
-  
-  output$figureFooter <- shiny::renderUI({
-    figureFooter()
-  })
-  
-  output$figureHelpText <- shiny::renderUI({
-    figureHelpText()
-  })
-  
-  output$figureSummary <- shiny::renderUI({
-    figureSummary()
-  })
-  
-  output$figureTitle <- shiny::renderUI({
-    figureTitle()
-  })
+  output$barChart <-
+    plotly::renderPlotly({
+      barChart()
+    })
+
+  output$barChartCaption <-
+    shiny::renderUI({
+      barChartCaption()
+    })
+
+  output$barChartSummary <-
+    shiny::renderUI({
+      barChartSummary()
+    })
+
+  output$barChartTitle <-
+    shiny::renderUI({
+      barChartTitle()
+    })
+
+  output$pageBottomText <-
+    shiny::renderUI({
+      pageBottomText()
+    })
 }
 
+
 # Run --------------------
+
 
 shinyApp(ui = ui, server = server)
