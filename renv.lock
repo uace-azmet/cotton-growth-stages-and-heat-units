@@ -112,7 +112,7 @@
       "RemoteUsername": "uace-azmet",
       "RemoteRepo": "azmetr",
       "RemoteRef": "main",
-      "RemoteSha": "f2da29a6e0dedbb4c4e43fc0022fd4b089676ddd",
+      "RemoteSha": "7f9eae36ac8ef144e03d5d1384e71b9f3d7f5272",
       "Requirements": [
         "R",
         "attempt",
@@ -126,7 +126,7 @@
         "tibble",
         "tidyselect"
       ],
-      "Hash": "8fbe122bc52b1650a32a0e3c223ff107"
+      "Hash": "6c9a4e47eaf4863db600b0d6d9aff601"
     },
     "base64enc": {
       "Package": "base64enc",
@@ -179,7 +179,7 @@
     },
     "bslib": {
       "Package": "bslib",
-      "Version": "0.9.0",
+      "Version": "0.10.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -197,7 +197,7 @@
         "rlang",
         "sass"
       ],
-      "Hash": "70a6489cc254171fb9b4a7f130f44dca"
+      "Hash": "d6072fb96c4868d8cb40d4071cdc472b"
     },
     "cachem": {
       "Package": "cachem",
