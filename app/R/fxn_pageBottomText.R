@@ -34,7 +34,7 @@ fxn_pageBottomText <- function(azmetStation, startDate, endDate) {
   
   heatUnitsWebpageURL <- 
     a(
-      "heat unit",
+      "heat units",
       href="https://azmet.arizona.edu/application-areas/heat-units",
       target="_blank"
     )
