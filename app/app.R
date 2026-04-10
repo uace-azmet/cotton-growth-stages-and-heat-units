@@ -17,7 +17,7 @@ ui <-
         bslib::layout_sidebar(
           sidebar = sidebar, # `scr##_sidebar.R`
           
-          # shiny::htmlOutput(outputId = "figureTitle"),
+          shiny::htmlOutput(outputId = "barChartTitle"),
           # shiny::htmlOutput(outputId = "figureSummary"),
           # shiny::htmlOutput(outputId = "figureHelpText"),
           # plotly::plotlyOutput(outputId = "figure"),
@@ -109,11 +109,11 @@ server <- function(input, output, session) {
   #       endDate = input$endDate
   #     )
   #   })
-  # 
-  # figureTitle <- 
-  #   shiny::eventReactive(totalHeatUnits(), {
-  #     fxn_figureTitle(azmetStation = input$azmetStation)
-  #   })
+
+  barChartTitle <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartTitle(azmetStation = input$azmetStation)
+    })
 
   pageBottomText <-
     shiny::eventReactive(totalHeatUnits(), {
@@ -147,11 +147,11 @@ server <- function(input, output, session) {
   #     figureSummary()
   #   })
   # 
-  # output$figureTitle <- 
-  #   shiny::renderUI({
-  #     figureTitle()
-  #   })
-  #   
+  output$barChartTitle <-
+    shiny::renderUI({
+      barChartTitle()
+    })
+
   output$pageBottomText <-
     shiny::renderUI({
       pageBottomText()

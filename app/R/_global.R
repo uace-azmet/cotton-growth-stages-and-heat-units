@@ -3,6 +3,7 @@
 
 library(azmetr)
 library(bsicons)
+library(bsicons)
 library(bslib)
 library(dplyr)
 library(htmltools)
