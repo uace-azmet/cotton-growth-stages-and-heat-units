@@ -18,10 +18,9 @@ ui <-
           sidebar = sidebar, # `scr##_sidebar.R`
           
           shiny::htmlOutput(outputId = "barChartTitle"),
-          # shiny::htmlOutput(outputId = "figureSummary"),
-          # shiny::htmlOutput(outputId = "figureHelpText"),
-          # plotly::plotlyOutput(outputId = "figure"),
-          # shiny::htmlOutput(outputId = "figureFooter")
+          shiny::htmlOutput(outputId = "barChartSummary"),
+          # plotly::plotlyOutput(outputId = "barChart"),
+          # shiny::htmlOutput(outputId = "barChartCaption")
         ) |>
           htmltools::tagAppendAttributes(
             #https://getbootstrap.com/docs/5.0/utilities/api/
@@ -90,7 +89,7 @@ server <- function(input, output, session) {
   #   shiny::eventReactive(totalHeatUnits(), {
   #     fxn_figureFooter(
   #       azmetStation = input$azmetStation,
-  #       startDate = input$plantingDate, 
+  #       startDate = input$startDate, 
   #       endDate = input$endDate
   #     )
   #   })
@@ -100,15 +99,15 @@ server <- function(input, output, session) {
   #     fxn_figureHelpText()
   #   })
   # 
-  # figureSummary <- 
-  #   shiny::eventReactive(totalHeatUnits(), {
-  #     fxn_figureSummary(
-  #       azmetStation = input$azmetStation, 
-  #       inData = totalHeatUnits(),
-  #       startDate = input$plantingDate, 
-  #       endDate = input$endDate
-  #     )
-  #   })
+  barChartSummary <-
+    shiny::eventReactive(totalHeatUnits(), {
+      fxn_barChartSummary(
+        azmetStation = input$azmetStation,
+        inData = totalHeatUnits()[[2]],
+        startDate = input$startDate,
+        endDate = input$endDate
+      )
+    })
 
   barChartTitle <-
     shiny::eventReactive(totalHeatUnits(), {
@@ -127,26 +126,21 @@ server <- function(input, output, session) {
   
   # Outputs -----
   
-  # output$figure <- 
+  # output$barChart <- 
   #   plotly::renderPlotly({
-  #     figure()
+  #     barChart()
   #   })
   # 
-  # output$figureFooter <- 
+  # output$barChartCaption <- 
   #   shiny::renderUI({
-  #     figureFooter()
+  #     barChartCaption()
   #   })
   # 
-  # output$figureHelpText <- 
-  #   shiny::renderUI({
-  #     figureHelpText()
-  #   })
-  # 
-  # output$figureSummary <- 
-  #   shiny::renderUI({
-  #     figureSummary()
-  #   })
-  # 
+  output$barChartSummary <-
+    shiny::renderUI({
+      barChartSummary()
+    })
+
   output$barChartTitle <-
     shiny::renderUI({
       barChartTitle()

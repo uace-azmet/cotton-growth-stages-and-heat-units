@@ -1,16 +1,19 @@
-#' `fxn_figureSummary.R` - Build summary of figure based on user input
+#' `fxn_barChartSummary.R` - Build summary of bar chart based on user input
 #' 
 #' @param azmetStation - AZMet station selection by user
 #' @param inData - data table of seasonal heat accumulation values by year
-#' @param startDate - Planting date of period of interest
+#' @param startDate - Start date of period of interest
 #' @param endDate - End date of period of interest
-#' @return `figureSummary` - Summary of figure based on user inputs
+#' @return `barChartSummary` - Summary of bar chart based on user inputs
 
 
-fxn_figureSummary <- function(azmetStation, inData, startDate, endDate) {
+fxn_barChartSummary <- function(azmetStation, inData, startDate, endDate) {
+  
   currentYear <- lubridate::year(endDate)
+  
   currentYearHeatSum <- 
-    dplyr::filter(inData, dateYear == currentYear)$heatSum
+    dplyr::filter(inData, end_date_year == currentYear) %>% 
+    dplyr::pull(total_heat_units_seasonal)
   
   if (currentYearHeatSum < 650) {
     growthStageText <- "before Pinhead Square"
@@ -52,7 +55,7 @@ fxn_figureSummary <- function(azmetStation, inData, startDate, endDate) {
     growthStageText <- "past Terminate (Long)"
   }
   
-  figureSummary <- 
+  barChartSummary <- 
     htmltools::p(
       htmltools::HTML(
         paste0(
@@ -60,8 +63,8 @@ fxn_figureSummary <- function(azmetStation, inData, startDate, endDate) {
         ),
       ),
       
-      class = "figure-summary"
+      class = "bar-chart-summary"
     )
   
-  return(figureSummary)
+  return(barChartSummary)
 }

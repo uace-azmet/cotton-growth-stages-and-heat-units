@@ -14,6 +14,14 @@
     content: attr(data-title);
 }
 
+.bar-chart-summary {
+  color: #191919;
+  font-weight: plain;
+  margin-bottom: 0px!important;
+  margin-top: 4px !important;
+  padding-bottom: 1rem !important;
+}
+
 .bar-chart-title {
   margin-top: 1.5rem;
   padding-bottom: 1rem !important;
