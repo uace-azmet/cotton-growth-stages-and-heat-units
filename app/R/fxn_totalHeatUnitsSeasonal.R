@@ -5,10 +5,10 @@
 #' @param startDate - Start date of period of interest
 #' @param endDate - End date of period of interest
 #' @param userDateRange - Date interval based on `startDate` and `endDate`
-#' @return `dataAZMettotalHeatUnitsSeasonal` - Data table with total heat units for a single season of an individual year
+#' @return `totalHeatUnitsSeasonal` - Data table with total heat units for a single season of an individual year
 
 
-fxn_totalHeatUnitsSeasonal <- function(azmetStation, inData, startDate, endDate, etEquation, userDateRange) {
+fxn_totalHeatUnitsSeasonal <- function(azmetStation, inData, startDate, endDate, userDateRange) {
   
   totalHeatUnitsSeasonal <- inData %>%
     dplyr::group_by(meta_station_name) %>%
